@@ -12,7 +12,7 @@ spring:
     throw-exception-if-no-handler-found: true
   resources:
     add-mappings: false
-      static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:D:/images/music/,file:D:/images/avatar/
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:D:/images/music/,file:D:/images/avatar/
   aop:
     proxy-target-class: true
     auto: true
@@ -39,3 +39,8 @@ logging:
 #PageHelper
 pagehelper:
   helperDialect: mysql
+
+#根路径
+server:
+  servlet:
+    context-path: /emptyspirit
