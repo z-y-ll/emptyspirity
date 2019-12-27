@@ -22,13 +22,14 @@ public class SongController {
         this.songService = songService;
     }
 
+    /**
+     * 根据类型来查找歌曲
+     * @param songtype
+     * @return
+     */
     @GetMapping("/songs/{songtype}")
-    public R getSongs(@PathVariable("songtype") String songtype){
+    public R getSongs(@PathVariable("songtype") String songtype) throws Exception {
         List songs = songService.getSongByType(songtype);
-        if (songs.size() == 0){
-            return R.no("没有该类型的歌曲");
-        }else {
-            return R.ok(songs, "查询成功");
-        }
+        return songs.size() == 0 ? R.no() : R.ok(songs);
     }
 }
