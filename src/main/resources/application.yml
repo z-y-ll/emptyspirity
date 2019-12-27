@@ -1,0 +1,38 @@
+
+spring:
+  #  配置文件
+  profiles:
+    active: dev
+  #DataSource
+  datasource:
+    username: root
+    password: 123456789
+    url: jdbc:mysql://localhost:3306/db_music?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+  aop:
+    proxy-target-class: true
+    auto: true
+  servlet:
+    multipart:
+      max-file-size: 10MB
+#DAO
+mybatis-plus:
+  mapper-locations: classpath:mapper/*/*.xml
+  global-config:
+    db-config:
+      id-type: auto
+#Security
+#shiro:
+#  enabled: true
+#Logging
+logging:
+  level:
+    root: warn
+    cn.emptyspirit: debug
+  path: /root/java/logs
+#PageHelper
+pagehelper:
+  helperDialect: mysql
