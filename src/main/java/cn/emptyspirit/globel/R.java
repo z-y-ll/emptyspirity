@@ -7,7 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 @SuppressWarnings("serial")
 public class R extends HashMap<String, Object> {
 
-
 	public static R ok(String... message) {
 		R r = new R();
 		r.put("code", 1);
