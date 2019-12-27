@@ -5,23 +5,16 @@ import cn.emptyspirit.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * @Author: zyll
- * @Date: 2019/12/27 15:17
- * @Version 1.0
- */
-@Service
-public class UserService {
+public interface UserService {
 
-    private UserMapper userMapper;
 
-    @Autowired
-    public UserService(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
+    /**
+     * 根据用户id获取用户信息
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    User getUserById(Integer id) throws Exception;
 
-    public User getUserById(Integer id){
-        return userMapper.selectById(id);
-    }
 
 }
