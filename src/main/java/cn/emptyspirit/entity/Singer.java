@@ -18,7 +18,7 @@ public class Singer {
 
     /**
      * singer_name
-     * 歌手名称
+     * 歌手名
      */
     private String singerName;
 

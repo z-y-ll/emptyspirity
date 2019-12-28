@@ -14,7 +14,7 @@ import java.util.Date;
 public class Comment {
     /**
      * id
-     * 自增主键
+     * 自增主
      */
     private Integer id;
 

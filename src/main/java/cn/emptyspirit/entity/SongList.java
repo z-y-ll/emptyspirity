@@ -18,7 +18,7 @@ public class SongList {
 
     /**
      * songlist_name
-     * 歌单名称
+     * 歌单名
      */
     private String songlistName;
 

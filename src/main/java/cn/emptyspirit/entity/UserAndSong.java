@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class UserAndSong {
     /**
-     * id
+     id
      * 自增id
      */
     private Integer id;

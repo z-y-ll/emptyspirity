@@ -20,7 +20,7 @@ public class Song {
 
     /**
      * song_name
-     * 歌曲名称
+     * 歌曲名
      */
     private String songName;
 

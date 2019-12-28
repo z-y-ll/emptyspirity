@@ -29,7 +29,7 @@ public class User {
     private String password;
 
     /**
-     * avatar
+      avatar
      * 头像路径
      */
     private String avatar;

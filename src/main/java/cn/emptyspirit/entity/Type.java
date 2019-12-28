@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class Type {
     /**
-     * id
+     id
      * 自增主键
      */
     private Integer id;
