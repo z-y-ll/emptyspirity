@@ -1,7 +1,11 @@
 package cn.emptyspirit.service.impl;
 
+import cn.emptyspirit.entity.Song;
 import cn.emptyspirit.entity.User;
+import cn.emptyspirit.entity.UserAndSong;
 import cn.emptyspirit.exception.ParamException;
+import cn.emptyspirit.mapper.SongMapper;
+import cn.emptyspirit.mapper.UserAndSongMapper;
 import cn.emptyspirit.mapper.UserMapper;
 import cn.emptyspirit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +19,14 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private UserMapper userMapper;
+    private SongMapper songMapper;
+    private UserAndSongMapper userAndSongMapper;
 
     @Autowired
-    public UserServiceImpl(UserMapper userMapper) {
+    public UserServiceImpl(UserMapper userMapper, SongMapper songMapper, UserAndSongMapper userAndSongMapper) {
         this.userMapper = userMapper;
+        this.songMapper = songMapper;
+        this.userAndSongMapper = userAndSongMapper;
     }
 
     /**
@@ -31,7 +39,7 @@ public class UserServiceImpl implements UserService {
         if (id == null) {
             throw new ParamException();
         }
-        return userMapper.selectById(id);
+        return userMapper.selectUnbannedUserById(id);
     }
 
 
@@ -85,6 +93,49 @@ public class UserServiceImpl implements UserService {
         user.setUserName(username);
         user.setPassword(password);
         return userMapper.insert(user);
+    }
+
+
+    /**
+     * 根据用户名查询用户信息
+     * @param username
+     * @return
+     */
+    @Override
+    public User selectUserByName(String username) throws Exception {
+        if (username == null) {
+            throw new ParamException();
+        }
+        // 判断用户是否存在
+        List<User> users = userMapper.selectUserByName(username);
+        if (users == null || users.isEmpty()) {
+            return null;
+        }
+        return users.get(0);
+    }
+
+
+    /**
+     * 修改用户密码
+     * @param id 用户id
+     * @param newPassword 新密码
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Boolean updateUserPassword(Integer id, String newPassword) throws Exception {
+        if (id == null || newPassword == null || "".equals(newPassword)) {
+            throw new ParamException();
+        }
+        // 判断用户是否存在
+        User user = userMapper.selectUnbannedUserById(id);
+        if (user == null) {
+            throw new ParamException("用户不存在");
+        }
+        // 更新密码
+        user.setPassword(newPassword);
+        Integer result = userMapper.updateById(user);
+        return result > 0 ? true : false;
     }
 
 

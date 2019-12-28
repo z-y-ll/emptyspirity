@@ -5,12 +5,15 @@ import cn.emptyspirit.globel.R;
 import cn.emptyspirit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import sun.security.util.Password;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 
 /**
- * 用户模块
+ * 用户模块：用户相关操作
  */
 @RestController
 @RequestMapping("/user")
@@ -51,6 +54,20 @@ public class UserController {
 
 
     /**
+     * 用户登出
+     */
+    @GetMapping("/logout")
+    public R logout(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return R.error("请先登录");
+        }
+        session.removeAttribute("user");
+        return R.ok("退出成功");
+    }
+
+
+    /**
      * 根据userid查询用户
      * @return
      * @throws Exception
@@ -75,5 +92,43 @@ public class UserController {
     }
 
 
+    /**
+     * 通过用户名判断用户是否存在
+     * 此方法提供给前端注册时使用
+     * 判断用户名是否重复
+     * @return
+     */
+    @GetMapping("/getUserByName/{username}")
+    public R getUserByName(@PathVariable("username") String username) throws Exception {
+        return userService.selectUserByName(username) == null ? R.no("无此用户") : R.ok("用户名存在");
+    }
+
+
+    /**
+     * 修改密码
+     * @return
+     */
+    @PostMapping("/changePassword")
+    public R changePassword(String newPassword, HttpSession session) throws Exception {
+        User user = (User) session.getAttribute("user");
+
+        //判断修改结果
+        if (userService.updateUserPassword(user.getId(), newPassword)) {
+            // 更新session中的user数据
+            user.setPassword(newPassword);
+            return R.ok("修改成功");
+        }
+        return R.error("修改失败");
+    }
+
+
+    /**
+     * 测试接口
+     */
+    @GetMapping("/test/{test}")
+    public R test(@PathVariable("test") String test) {
+        System.out.println(test);
+        return R.ok(test);
+    }
 
 }
