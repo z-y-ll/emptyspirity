@@ -2,9 +2,7 @@ package cn.emptyspirit.controller;
 import cn.emptyspirit.globel.R;
 import cn.emptyspirit.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,6 +12,7 @@ import java.util.List;
  * @Version 1.0
  */
 @RestController
+@RequestMapping("/song")
 public class SongController {
     private SongService songService;
 

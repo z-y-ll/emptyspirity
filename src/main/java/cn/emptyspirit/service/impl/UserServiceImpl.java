@@ -22,6 +22,7 @@ public class UserServiceImpl implements UserService {
      * @param id
      * @return
      */
+    @Override
     public User getUserById(Integer id) throws Exception{
         if (id == null) {
             throw new ParamException();
