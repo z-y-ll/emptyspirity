@@ -9,23 +9,16 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class UserAndSongList {
+public class Type {
     /**
      * id
-     * 自增id
+     * 自增主键
      */
     private Integer id;
 
     /**
-     * user_id
-     * 用户id
+     * name
+     * 歌曲类型名
      */
-    private Integer userId;
-
-    /**
-     * songlist_id
-     * 歌单id
-     */
-    private Integer songlistId;
-
+    private String name;
 }

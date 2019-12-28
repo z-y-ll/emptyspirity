@@ -10,16 +10,39 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class Singer {
+    /**
+     * id
+     * 自增id
+     */
     private Integer id;
 
+    /**
+     * singer_name
+     * 歌手名称
+     */
     private String singerName;
 
+    /**
+     * avatar
+     * 头像路径
+     */
     private String avatar;
 
+    /**
+     * gender
+     * 性别（0为男，1为女）
+     */
     private Integer gender;
 
+    /**
+     * age
+     * 
+     */
     private Integer age;
 
+    /**
+     * introduction
+     * 歌手介绍
+     */
     private String introduction;
-
 }

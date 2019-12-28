@@ -10,10 +10,21 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class UserAndSong {
+    /**
+     * id
+     * 自增id
+     */
     private Integer id;
 
+    /**
+     * user_id
+     * 用户id
+     */
     private Integer userId;
 
+    /**
+     * song_id
+     * 歌曲id
+     */
     private Integer songId;
-
 }
