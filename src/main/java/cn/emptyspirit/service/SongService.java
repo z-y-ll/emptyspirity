@@ -13,6 +13,7 @@ public interface SongService {
      * 根据类型类查找歌曲
      * @param songtype
      * @return
+     * @throws Exception
      */
     List getSongByType(String  songtype) throws Exception;
 }
