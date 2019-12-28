@@ -16,5 +16,20 @@ public interface UserService {
      */
     User getUserById(Integer id) throws Exception;
 
+    /**
+     * 根据用户名或密码查找用户
+     * @param username
+     * @param password
+     * @return
+     * @throws Exception
+     */
+    User selectUserByNameAndPwd(String username, String password) throws Exception;
 
+    /**
+     * 用户注册
+     * @param username
+     * @param password
+     * @return
+     */
+    Integer userRegister(String username, String password) throws Exception;
 }

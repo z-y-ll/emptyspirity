@@ -24,17 +24,29 @@ public class UserController {
 
 
     /**
+     * 用户注册
+     * @return
+     */
+    @PostMapping("/register")
+    public R register(String username, String password) throws Exception {
+        return userService.userRegister(username, password) > 0 ? R.ok("注册成功") : R.error("注册失败");
+    }
+
+
+    /**
      * 用户登录
-     * @param userName 用户名
+     * @param username 用户名
      * @param password 密码
      * @return
      */
     @PostMapping("/login")
-    public R login(String userName, String password, HttpSession session){
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
+    public R login(String username, String password, HttpSession session) throws Exception {
+        User user = userService.selectUserByNameAndPwd(username, password);
+        if (user != null) {
+            session.setAttribute("user", user);
+            return R.ok(user);
         }
-        return R.ok("aaaaaaaaaaaaaaaaaaa");
+        return R.no("用户名或密码错误");
     }
 
 

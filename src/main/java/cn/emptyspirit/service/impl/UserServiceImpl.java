@@ -6,8 +6,12 @@ import cn.emptyspirit.mapper.UserMapper;
 import cn.emptyspirit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private UserMapper userMapper;
@@ -30,6 +34,58 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectById(id);
     }
 
+
+    /**
+     * 根据用户名和密码查找用户
+     * @param username
+     * @param password
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public User selectUserByNameAndPwd(String username, String password) throws Exception {
+        if (username == null || password == null) {
+            throw new ParamException();
+        }
+        List<User> users = userMapper.selectUserByName(username);
+        // 无此用户
+        if (users == null || users.isEmpty()) {
+            return null;
+        }
+        // 若查询出多个用户，则数据异常，因为用户名唯一
+        if (users.size() > 1) {
+            throw new ParamException("账号异常");
+        }
+
+        // 判断密码是否一致
+        User user = users.get(0);
+        return password.equals(user.getPassword()) ? user : null;
+    }
+
+
+    /**
+     * 用户注册
+     * @param username
+     * @param password
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Integer userRegister(String username, String password) throws Exception {
+        if (username == null || password == null || "".equals(username) || "".equals(password)) {
+            throw new ParamException();
+        }
+        // 判断用户名是否已经存在
+        List<User> users = userMapper.selectUserByName(username);
+        if (users != null && !users.isEmpty()) {
+            throw new ParamException("用户名已存在");
+        }
+        // 向数据库中插入一条记录
+        User user = new User();
+        user.setUserName(username);
+        user.setPassword(password);
+        return userMapper.insert(user);
+    }
 
 
 }
