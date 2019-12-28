@@ -1,11 +1,10 @@
 package cn.emptyspirit.exception;
 
 /**
- * @Author: zyll
- * @Date: 2019/12/27 23:58
- * @Version 1.0
+ * 自定义异常：方法接收的参数异常
  */
-public class ParamException extends RuntimeException{
+public class ParamException extends RuntimeException {
+
     // 错误信息
     private String message = "信息获取异常！";
     private Integer code = -1;
