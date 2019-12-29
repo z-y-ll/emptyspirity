@@ -3,6 +3,7 @@ package cn.emptyspirit.service.impl;
 import cn.emptyspirit.entity.Song;
 import cn.emptyspirit.entity.User;
 import cn.emptyspirit.entity.UserAndSong;
+import cn.emptyspirit.entity.expand.SongExpand;
 import cn.emptyspirit.exception.ParamException;
 import cn.emptyspirit.mapper.SongMapper;
 import cn.emptyspirit.mapper.UserAndSongMapper;
@@ -11,6 +12,8 @@ import cn.emptyspirit.service.UserAndSongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -58,6 +61,10 @@ public class UserAndSongServiceImpl implements UserAndSongService {
             throw new ParamException("不能重复收藏");
         }
 
+        // 更新歌曲的收藏量
+        song.setLikeNumber(song.getLikeNumber() + 1);
+        songMapper.updateById(song);
+
         // 封装一条用户收藏歌曲的记录，并插入到数据库
         userAndSong = new UserAndSong();
         userAndSong.setUserId(userId);
@@ -91,6 +98,12 @@ public class UserAndSongServiceImpl implements UserAndSongService {
         if (userAndSong == null || userAndSong.getUserId() != userId) {
             throw new ParamException("收藏信息异常");
         }
+
+
+        // 更新歌曲的收藏量
+        Song song = songMapper.selectById(userAndSong.getSongId());
+        song.setLikeNumber(song.getLikeNumber() - 1);
+        songMapper.updateById(song);
 
         // 删除并返回结果
         return userAndSongMapper.deleteById(userAndSongId);
@@ -128,7 +141,33 @@ public class UserAndSongServiceImpl implements UserAndSongService {
             throw new ParamException("收藏信息异常");
         }
 
+        // 更新歌曲的收藏量
+        song.setLikeNumber(song.getLikeNumber() - 1);
+        songMapper.updateById(song);
+
         // 删除收藏记录,并返回结果
         return userAndSongMapper.deleteById(userAndSong.getId());
+    }
+
+
+    /**
+     * 查询用户收藏的所有歌曲
+     * @param userId 用户的名字
+     * @return
+     */
+    @Override
+    public List<SongExpand> selectFavoriteSongsByUserId(Integer userId) throws Exception {
+        if (userId == null) {
+            throw new ParamException();
+        }
+
+        // 查询用户是否存在
+        User user = userMapper.selectUnbannedUserById(userId);
+        if (user == null) {
+            throw new ParamException("用户信息异常");
+        }
+
+        // 查询用户收藏的歌曲
+        return userAndSongMapper.selectFavoriteSongsByUserId(userId);
     }
 }

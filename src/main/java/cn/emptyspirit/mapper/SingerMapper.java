@@ -1,9 +1,12 @@
 package cn.emptyspirit.mapper;
 
+import cn.emptyspirit.entity.Singer;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
 /**
- * @author zyll
  */
 
-public interface SingerMapper {
+public interface SingerMapper extends BaseMapper<Singer> {
+
 
 }

@@ -1,5 +1,9 @@
 package cn.emptyspirit.service;
 
+import cn.emptyspirit.entity.expand.SongExpand;
+
+import java.util.List;
+
 public interface UserAndSongService {
 
 
@@ -31,4 +35,13 @@ public interface UserAndSongService {
      * @throws Exception
      */
     Integer deleteFavoriteBySongId(Integer songId, Integer userId) throws Exception;
+
+
+    /**
+     * 查询用户收藏的所有歌曲
+     * @param userId 用户的名字
+     * @return
+     */
+    List<SongExpand> selectFavoriteSongsByUserId(Integer userId) throws Exception;
+
 }

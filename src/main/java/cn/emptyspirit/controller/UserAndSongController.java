@@ -1,15 +1,14 @@
 package cn.emptyspirit.controller;
 
 import cn.emptyspirit.entity.User;
+import cn.emptyspirit.entity.expand.SongExpand;
 import cn.emptyspirit.globel.R;
 import cn.emptyspirit.service.UserAndSongService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * 用户收藏歌曲相关操作
@@ -72,7 +71,13 @@ public class UserAndSongController {
      * @param session
      * @return
      */
-//    public R getFavoriteSongs(HttpSession session) {
-//
-//    }
+    @GetMapping("/getFavoriteSongs")
+    public R getFavoriteSongs(HttpSession session) throws Exception {
+        User user = (User) session.getAttribute("user");
+        List<SongExpand> songs = userAndSongService.selectFavoriteSongsByUserId(user.getId());
+        if (songs == null || songs.isEmpty()) {
+            return R.no();
+        }
+        return R.ok(songs);
+    }
 }
