@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @SpringBootApplication
 @EnableTransactionManagement
-@MapperScan("cn.emptyspirit.mapper")
 @EnableCaching
+@MapperScan("cn.emptyspirit.mapper")
 public class EmptyspiritApplication {
     public static void main(String[] args) {
         SpringApplication.run(EmptyspiritApplication.class, args);

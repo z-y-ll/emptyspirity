@@ -1,15 +1,15 @@
 package cn.emptyspirit.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.*;
-
-import javax.validation.constraints.Null;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Builder
 @TableName("t_type")
 public class Type {
     /**

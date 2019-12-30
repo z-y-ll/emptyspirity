@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.emptyspirit.mapper.UserAndSongListMapper">
+
+
+    <select id="selectFavoriteSongListByUserId" parameterType="Integer"
+            resultType="cn.emptyspirit.entity.expand.SongListExpand">
+        SELECT
+            c.id,
+            c.songlist_name,
+            c.like_numbers,
+            c.introduction,
+            d.songNum
+        FROM
+            t_user a
+            INNER JOIN t_user_songlist b ON a.id = #{value }
+            AND a.id = b.user_id
+            LEFT JOIN t_songlist c ON b.songlist_id = c.id
+            LEFT JOIN
+              ( SELECT songlist_id, count( 1 ) songNum FROM t_songlist_song GROUP BY songlist_id ) d
+              ON d.songlist_id = c.id;
+    </select>
+
+</mapper>
