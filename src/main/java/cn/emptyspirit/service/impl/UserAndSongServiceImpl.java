@@ -9,6 +9,8 @@ import cn.emptyspirit.mapper.SongMapper;
 import cn.emptyspirit.mapper.UserAndSongMapper;
 import cn.emptyspirit.mapper.UserMapper;
 import cn.emptyspirit.service.UserAndSongService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -169,5 +171,31 @@ public class UserAndSongServiceImpl implements UserAndSongService {
 
         // 查询用户收藏的歌曲
         return userAndSongMapper.selectFavoriteSongsByUserId(userId);
+    }
+
+
+    /**
+     * 分页查询用户收藏的歌曲
+     * @param pageNum 页号
+     * @param pageSize 页面大小
+     * @param userId 用户id
+     * @return
+     */
+    @Override
+    public PageInfo<SongExpand> getOnePageFavoriteSongs(Integer pageNum, Integer pageSize, Integer userId) throws Exception {
+        if (pageNum == null || pageSize == null || userId == null) {
+            throw new ParamException();
+        }
+
+        // 查询用户是否存在
+        User user = userMapper.selectUnbannedUserById(userId);
+        if (user == null) {
+            throw new ParamException("用户信息异常");
+        }
+
+        // 分页
+        PageHelper.startPage(pageNum, pageSize);
+        List<SongExpand> songExpands = userAndSongMapper.selectFavoriteSongsByUserId(userId);
+        return new PageInfo<>(songExpands);
     }
 }

@@ -1,6 +1,7 @@
 package cn.emptyspirit.service;
 
 import cn.emptyspirit.entity.expand.SongExpand;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -44,4 +45,13 @@ public interface UserAndSongService {
      */
     List<SongExpand> selectFavoriteSongsByUserId(Integer userId) throws Exception;
 
+
+    /**
+     * 分页查询用户的所有收藏歌曲
+     * @param pageNum 页号
+     * @param pageSize 页面大小
+     * @param userId 用户id
+     * @return
+     */
+    PageInfo<SongExpand> getOnePageFavoriteSongs(Integer pageNum, Integer pageSize, Integer userId) throws Exception;
 }

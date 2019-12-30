@@ -4,6 +4,7 @@ import cn.emptyspirit.entity.User;
 import cn.emptyspirit.entity.expand.SongExpand;
 import cn.emptyspirit.global.R;
 import cn.emptyspirit.service.UserAndSongService;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -80,4 +81,21 @@ public class UserAndSongController {
         }
         return R.ok(songs);
     }
+
+
+    /**
+     * 查询用户收藏的歌曲
+     * 分页查询
+     * @return
+     */
+    @GetMapping("/getOnePageFavoriteSongs")
+    public R getOnePageFavoriteSongs(@RequestParam(defaultValue = "1") Integer pageNum,
+                                     @RequestParam(defaultValue = "2") Integer pageSize,
+                                     HttpSession session) throws Exception {
+        User user = (User) session.getAttribute("user");
+        PageInfo<SongExpand> pageInfo =
+                userAndSongService.getOnePageFavoriteSongs(pageNum, pageSize, user.getId());
+        return pageInfo.getTotal() == 0 ? R.no() : R.ok(pageInfo);
+    }
+
 }

@@ -24,7 +24,7 @@
         from
             t_user_song a
             inner join t_song b on a.user_id = #{value } and a.song_id = b.id
-            left join t_singer c on c.id = b.singer_id;
+            left join t_singer c on c.id = b.singer_id
     </select>
 
 </mapper>
