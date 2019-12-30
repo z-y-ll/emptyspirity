@@ -11,13 +11,14 @@ spring:
   mvc:
     throw-exception-if-no-handler-found: true
     add-mappings: false
-    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:D:/emptyspirit/
   aop:
     proxy-target-class: true
     auto: true
   servlet:
     multipart:
       max-file-size: 10MB
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:D:/emptyspirit/
 
 #DAO
 mybatis-plus:
