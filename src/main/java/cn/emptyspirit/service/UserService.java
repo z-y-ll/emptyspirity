@@ -16,5 +16,4 @@ public interface UserService {
      */
     User getUserById(Integer id) throws Exception;
 
-
 }

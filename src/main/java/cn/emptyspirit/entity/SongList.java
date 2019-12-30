@@ -1,14 +1,14 @@
 package cn.emptyspirit.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
+@TableName("t_songlist")
 public class SongList {
     /**
      * id

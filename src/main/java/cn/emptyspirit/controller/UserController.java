@@ -61,7 +61,4 @@ public class UserController {
         User user = (User) session.getAttribute("user");
         return user == null ? R.no() : R.ok(user);
     }
-
-
-
 }
