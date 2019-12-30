@@ -5,7 +5,10 @@ import cn.emptyspirit.entity.SongListAndSong;
 import cn.emptyspirit.mapper.SongListAndSongMapper;
 import cn.emptyspirit.mapper.SongMapper;
 import cn.emptyspirit.service.SongService;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -24,13 +27,11 @@ public class SongServiceImpl implements SongService {
     private SongMapper songMapper;
     private SongListAndSongMapper songListAndSongMapper;
 
+    @Autowired
     public SongServiceImpl(SongMapper songMapper, SongListAndSongMapper songListAndSongMapper) {
         this.songMapper = songMapper;
         this.songListAndSongMapper = songListAndSongMapper;
     }
-
-    @Autowired
-
 
     /**
      * 查询所有歌曲
@@ -40,8 +41,9 @@ public class SongServiceImpl implements SongService {
      */
     @Override
     @Cacheable(cacheNames = {"songs"})
-    public List<Song> getSongs() throws Exception {
-        return songMapper.selectList(Wrappers.emptyWrapper());
+    public PageInfo<Song> getSongs(Integer pageNum, Integer pageSize) throws Exception {
+        Wrapper<Song> wrapper = Wrappers.<Song>lambdaQuery();
+        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> songMapper.selectList(wrapper));
     }
 
     /**
@@ -52,8 +54,9 @@ public class SongServiceImpl implements SongService {
      * @throws Exception
      */
     @Override
-    public List<Song> getSongsByType(Integer typeid) throws Exception {
-        return songMapper.selectList(Wrappers.<Song>lambdaQuery().eq(Song::getId, typeid));
+    public PageInfo<Song> getSongsByType(Integer typeid, Integer pageNum, Integer pageSize) throws Exception {
+        Wrapper<Song> wrapper = Wrappers.<Song>lambdaQuery().eq(Song::getId, typeid);
+        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> songMapper.selectList(wrapper));
     }
 
     /**
@@ -75,8 +78,9 @@ public class SongServiceImpl implements SongService {
      * @throws Exception
      */
     @Override
-    public List<Song> getSongsBySinger(Integer singerid) throws Exception {
-        return songMapper.selectList(Wrappers.<Song>lambdaQuery().eq(Song::getSingerId, singerid));
+    public PageInfo<Song> getSongsBySinger(Integer singerid, Integer pageNum, Integer pageSize) throws Exception {
+        Wrapper<Song> wrapper = Wrappers.<Song>lambdaQuery().eq(Song::getId, singerid);
+        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> songMapper.selectList(wrapper));
     }
 
     /**
@@ -87,7 +91,7 @@ public class SongServiceImpl implements SongService {
      * @throws Exception
      */
     @Override
-    public List<Song> getSongsBySongList(Integer songlistid) throws Exception {
+    public PageInfo<Song> getSongsBySongList(Integer songlistid, Integer pageNum, Integer pageSize) throws Exception {
         List<SongListAndSong> list = songListAndSongMapper.selectList(Wrappers.<SongListAndSong>lambdaQuery().eq(SongListAndSong::getSonglistId, songlistid));
         if (list.isEmpty()){
             return null;
@@ -96,7 +100,7 @@ public class SongServiceImpl implements SongService {
             for (SongListAndSong songlistandsong : list ) {
                 ids.add(songlistandsong.getSongId());
             }
-            return songMapper.selectBatchIds(ids);
+            return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> songMapper.selectBatchIds(ids));
         }
     }
 }

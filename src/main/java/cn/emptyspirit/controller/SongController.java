@@ -2,10 +2,9 @@ package cn.emptyspirit.controller;
 import cn.emptyspirit.entity.Song;
 import cn.emptyspirit.global.R;
 import cn.emptyspirit.service.SongService;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @Author: zyll
@@ -28,9 +27,10 @@ public class SongController {
      * @throws Exception
      */
     @GetMapping("/getSongs")
-    public R getSongs() throws Exception{
-        List<Song> songList = songService.getSongs();
-        return songList.isEmpty() ? R.no() : R.ok(songList);
+    public R getSongs(@RequestParam(defaultValue = "1") Integer pageNum,
+                      @RequestParam(defaultValue = "5") Integer pageSize) throws Exception{
+        PageInfo<Song> pageInfo = songService.getSongs(pageNum, pageSize);
+        return pageInfo.getTotal() == 0 ? R.no() : R.ok(pageInfo);
 
     }
     /**
@@ -40,9 +40,11 @@ public class SongController {
      * @throws Exception
      */
     @GetMapping("/getSongsByTypeid/{typeid}")
-    public R getSongsByType(@PathVariable("typeid") Integer typeid) throws Exception {
-        List<Song> songList = songService.getSongsByType(typeid);
-        return songList.isEmpty() ? R.no() : R.ok(songList);
+    public R getSongsByType(@PathVariable("typeid") Integer typeid,
+                            @RequestParam(defaultValue = "1") Integer pageNum,
+                            @RequestParam(defaultValue = "5") Integer pageSize) throws Exception {
+        PageInfo<Song> pageInfo = songService.getSongsByType(typeid, pageNum, pageSize);
+        return pageInfo.getTotal() == 0 ? R.no() : R.ok(pageInfo);
     }
 
     /**
@@ -63,14 +65,25 @@ public class SongController {
      * @throws Exception
      */
     @GetMapping("/getSongsBySingerid/{singerid}")
-    public R getSongsBySinger(@PathVariable("singerid") Integer singerid) throws Exception {
-        List<Song> songList = songService.getSongsBySinger(singerid);
-        return songList.isEmpty() ? R.no() : R.ok(songList);
+    public R getSongsBySinger(@PathVariable("singerid") Integer singerid,
+                              @RequestParam(defaultValue = "1") Integer pageNum,
+                              @RequestParam(defaultValue = "5") Integer pageSize) throws Exception {
+        PageInfo<Song> pageInfo = songService.getSongsBySinger(singerid, pageNum, pageSize);
+        return pageInfo.getTotal() == 0 ? R.no() : R.ok(pageInfo);
     }
 
+    /**
+     * 根据歌单id来查找歌曲
+     * @param songlistid
+     * @return
+     * @throws Exception
+     */
     @GetMapping("/getSongsBySonglistid/{songlistid}")
-    public R getSongsBySongList(@PathVariable("songlistid") Integer songlistid) throws Exception{
-        List<Song> songList = songService.getSongsBySongList(songlistid);
-        return songList.isEmpty() ? R.no() : R.ok(songList);
+    public R getSongsBySongList(@PathVariable("songlistid") Integer songlistid,
+                                @RequestParam(defaultValue = "1") Integer pageNum,
+                                @RequestParam(defaultValue = "5") Integer pageSize) throws Exception{
+        PageInfo<Song> pageInfo = songService.getSongsBySongList(songlistid, pageNum, pageSize);
+        return pageInfo.getTotal() == 0 ? R.no() : R.ok(pageInfo);
     }
+
 }
