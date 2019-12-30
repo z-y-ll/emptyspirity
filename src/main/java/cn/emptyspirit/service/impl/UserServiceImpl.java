@@ -1,9 +1,11 @@
 package cn.emptyspirit.service.impl;
 
+import cn.emptyspirit.constant.FileUploadConstant;
 import cn.emptyspirit.entity.Song;
 import cn.emptyspirit.entity.User;
 import cn.emptyspirit.entity.UserAndSong;
 import cn.emptyspirit.exception.ParamException;
+import cn.emptyspirit.global.FileUtil;
 import cn.emptyspirit.mapper.SongMapper;
 import cn.emptyspirit.mapper.UserAndSongMapper;
 import cn.emptyspirit.mapper.UserMapper;
@@ -12,8 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -133,10 +138,54 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new ParamException("用户不存在");
         }
+
+        // 判断新旧密码一致，则不用修改
+        if (newPassword.equals(user.getPassword())) {
+            return true;
+        }
+
         // 更新密码
         user.setPassword(newPassword);
         Integer result = userMapper.updateById(user);
         return result > 0 ? true : false;
+    }
+
+
+    /**
+     * 需改用户头像
+     * @param avatar 头像文件
+     * @param userId 用户id
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public String changeAvatar(MultipartFile avatar, Integer userId) throws Exception {
+        if (userId == null || avatar == null) {
+            throw new ParamException();
+        }
+        if (avatar.isEmpty()) {
+            throw new ParamException("文件不能为空");
+        }
+
+        // 判断用户是否存在
+        User user = userMapper.selectUnbannedUserById(userId);
+        if (user == null) {
+            throw new ParamException("用户不存在");
+        }
+
+        // 随机文件名称
+        String avatarName = FileUtil.randomFileName(avatar);
+        System.out.println(avatarName);
+        // 拼凑文件路径
+        String path = FileUploadConstant.ROOT_PATH + FileUploadConstant.AVATAR_PATH + avatarName;
+        avatar.transferTo(new File(path));
+
+        // 更新数据库
+        user.setAvatar(FileUploadConstant.AVATAR_PATH + avatarName);
+        userMapper.updateById(user);
+
+        // 返回新路径
+        return FileUploadConstant.AVATAR_PATH + avatarName;
     }
 
 
