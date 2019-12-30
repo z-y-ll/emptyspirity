@@ -3,6 +3,7 @@ package cn.emptyspirit.mapper;
 import cn.emptyspirit.entity.UserAndSong;
 import cn.emptyspirit.entity.expand.SongExpand;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 /**
  */
+@Mapper
 public interface UserAndSongMapper extends BaseMapper<UserAndSong> {
 
     /**

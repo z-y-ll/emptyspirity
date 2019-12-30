@@ -1,5 +1,6 @@
 package cn.emptyspirit.controller;
 import cn.emptyspirit.entity.Song;
+import cn.emptyspirit.entity.expand.SongExpand;
 import cn.emptyspirit.global.R;
 import cn.emptyspirit.service.SongService;
 import com.github.pagehelper.PageInfo;
@@ -30,9 +31,8 @@ public class SongController {
     @GetMapping("/getSongs")
     public R getSongs(@RequestParam(defaultValue = "1") Integer pageNum,
                       @RequestParam(defaultValue = "5") Integer pageSize) throws Exception{
-        PageInfo<Song> pageInfo = songService.getSongs(pageNum, pageSize);
+        PageInfo<SongExpand> pageInfo = songService.getSongs(pageNum, pageSize);
         return pageInfo.getTotal() == 0 ? R.no() : R.ok(pageInfo);
-
     }
     /**
      * 根据类型id分类歌曲

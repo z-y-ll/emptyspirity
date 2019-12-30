@@ -35,4 +35,10 @@ public class SongList {
      * 歌单收藏量
      */
     private Integer likeNumbers;
+
+
+    /**
+     * 歌单图片路径
+     */
+    private String imageUrl;
 }
