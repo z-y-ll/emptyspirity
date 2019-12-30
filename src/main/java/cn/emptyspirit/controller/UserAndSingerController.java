@@ -5,10 +5,7 @@ import cn.emptyspirit.entity.User;
 import cn.emptyspirit.global.R;
 import cn.emptyspirit.service.UserAndSingerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -18,6 +15,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/userAndSinger")
+@CrossOrigin
 public class UserAndSingerController {
 
     private UserAndSingerService userAndSingerService;

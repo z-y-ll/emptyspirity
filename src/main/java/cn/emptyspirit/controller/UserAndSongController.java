@@ -16,6 +16,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("userAndSong")
+@CrossOrigin
 public class UserAndSongController {
 
     private final UserAndSongService userAndSongService;
