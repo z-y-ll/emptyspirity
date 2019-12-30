@@ -26,6 +26,7 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto
+  type-aliases-package: cn.emptyspirit.entity
 #Security
 #shiro:
 #  enabled: true

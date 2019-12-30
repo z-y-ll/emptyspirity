@@ -4,10 +4,10 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @ToString
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @TableName("t_song")
 public class Song {
     /**
