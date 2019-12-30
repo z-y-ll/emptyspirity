@@ -1,6 +1,7 @@
 package cn.emptyspirit.service;
 
 import cn.emptyspirit.entity.User;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
 
@@ -49,4 +50,11 @@ public interface UserService {
     Boolean updateUserPassword(Integer id, String newPassword) throws Exception;
 
 
+    /**
+     * 修改用户头像
+     * @param avatar 头像文件
+     * @param userId
+     * @return
+     */
+    String changeAvatar(MultipartFile avatar, Integer userId) throws Exception;
 }

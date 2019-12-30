@@ -24,12 +24,13 @@ public class SongServiceImpl implements SongService {
     private SongMapper songMapper;
     private SongListAndSongMapper songListAndSongMapper;
 
+    @Autowired
     public SongServiceImpl(SongMapper songMapper, SongListAndSongMapper songListAndSongMapper) {
         this.songMapper = songMapper;
         this.songListAndSongMapper = songListAndSongMapper;
     }
 
-    @Autowired
+
 
 
     /**

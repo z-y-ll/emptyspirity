@@ -5,6 +5,7 @@ import cn.emptyspirit.global.R;
 import cn.emptyspirit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
     private final UserService userService;
 
     @Autowired
@@ -118,6 +120,24 @@ public class UserController {
             return R.ok("修改成功");
         }
         return R.error("修改失败");
+    }
+
+
+    /**
+     * 用户修改头像
+     * @param avatar 头像文件
+     * @param session
+     * @return
+     */
+    @PostMapping("changeAvatar")
+    public R changeAvatar(MultipartFile avatar, HttpSession session) throws Exception {
+        User user = (User) session.getAttribute("user");
+        String newPath = userService.changeAvatar(avatar, user.getId());
+        if (newPath != null && !"".equals(newPath)) {
+            user.setAvatar(newPath);
+            return R.ok(newPath);
+        }
+        return R.error("上传失败");
     }
 
 
