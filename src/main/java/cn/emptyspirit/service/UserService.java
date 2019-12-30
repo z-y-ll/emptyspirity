@@ -1,10 +1,6 @@
 package cn.emptyspirit.service;
 
 import cn.emptyspirit.entity.User;
-import cn.emptyspirit.globel.R;
-import cn.emptyspirit.mapper.UserMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 public interface UserService {
 

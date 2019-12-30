@@ -1,16 +1,12 @@
 package cn.emptyspirit.controller;
 
 import cn.emptyspirit.entity.User;
-import cn.emptyspirit.globel.R;
+import cn.emptyspirit.global.R;
 import cn.emptyspirit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import sun.security.util.Password;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * 用户模块：用户相关操作
@@ -28,7 +24,10 @@ public class UserController {
 
     /**
      * 用户注册
+     * @param username
+     * @param password
      * @return
+     * @throws Exception
      */
     @PostMapping("/register")
     public R register(String username, String password) throws Exception {

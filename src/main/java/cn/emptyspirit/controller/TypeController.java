@@ -1,7 +1,7 @@
 package cn.emptyspirit.controller;
 
 import cn.emptyspirit.entity.Type;
-import cn.emptyspirit.globel.R;
+import cn.emptyspirit.global.R;
 import cn.emptyspirit.service.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

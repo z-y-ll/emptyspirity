@@ -1,6 +1,6 @@
 package cn.emptyspirit.exception;
 
-import cn.emptyspirit.globel.R;
+import cn.emptyspirit.global.R;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 

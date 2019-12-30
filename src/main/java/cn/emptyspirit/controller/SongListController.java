@@ -1,7 +1,7 @@
 package cn.emptyspirit.controller;
 
 import cn.emptyspirit.entity.SongList;
-import cn.emptyspirit.globel.R;
+import cn.emptyspirit.global.R;
 import cn.emptyspirit.service.SongListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

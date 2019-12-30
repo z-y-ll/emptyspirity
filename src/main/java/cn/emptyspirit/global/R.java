@@ -1,4 +1,4 @@
-package cn.emptyspirit.globel;
+package cn.emptyspirit.global;
 
 import java.util.HashMap;
 

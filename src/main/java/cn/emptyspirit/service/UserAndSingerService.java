@@ -1,7 +1,6 @@
 package cn.emptyspirit.service;
 
 import cn.emptyspirit.entity.Singer;
-import cn.emptyspirit.globel.R;
 
 import java.util.List;
 
