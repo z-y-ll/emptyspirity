@@ -2,6 +2,7 @@ package cn.emptyspirit.service;
 
 
 import cn.emptyspirit.entity.Song;
+import cn.emptyspirit.entity.expand.SongExpand;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageInfo;
 
@@ -19,7 +20,7 @@ public interface SongService {
      * @return
      * @throws Exception
      */
-    PageInfo<Song> getSongs (Integer pageNum, Integer pageSize) throws Exception;
+    PageInfo<SongExpand> getSongs (Integer pageNum, Integer pageSize) throws Exception;
     /**
      * 根据类型id分类歌曲
      * @param typeid

@@ -1,13 +1,15 @@
 package cn.emptyspirit.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
-@Builder
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @TableName("t_songlist")
 public class SongList {
     /**
@@ -34,9 +36,9 @@ public class SongList {
      */
     private Integer likeNumbers;
 
+
     /**
      * 歌单图片路径
      */
     private String imageUrl;
-
 }

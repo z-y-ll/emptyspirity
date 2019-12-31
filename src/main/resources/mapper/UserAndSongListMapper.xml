@@ -10,6 +10,7 @@
             c.songlist_name,
             c.like_numbers,
             c.introduction,
+            c.image_url,
             d.songNum
         FROM
             t_user a

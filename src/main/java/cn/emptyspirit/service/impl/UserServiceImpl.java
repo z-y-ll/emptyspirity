@@ -1,9 +1,7 @@
 package cn.emptyspirit.service.impl;
 
-import cn.emptyspirit.constant.FileUploadConstant;
-import cn.emptyspirit.entity.Song;
+import cn.emptyspirit.constant.FileConstant;
 import cn.emptyspirit.entity.User;
-import cn.emptyspirit.entity.UserAndSong;
 import cn.emptyspirit.exception.ParamException;
 import cn.emptyspirit.global.FileUtil;
 import cn.emptyspirit.mapper.SongMapper;
@@ -11,14 +9,12 @@ import cn.emptyspirit.mapper.UserAndSongMapper;
 import cn.emptyspirit.mapper.UserMapper;
 import cn.emptyspirit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Transactional
@@ -71,9 +67,17 @@ public class UserServiceImpl implements UserService {
             throw new ParamException("账号异常");
         }
 
-        // 判断密码是否一致
         User user = users.get(0);
-        return password.equals(user.getPassword()) ? user : null;
+        // 判断密码是否一致
+        if (password.equals(user.getPassword())) {
+            user.setPassword(null);
+            // 判断是否需要默认头像
+            if (user.getAvatar() == null || user.getAvatar().equals("")) {
+                user.setAvatar(FileConstant.DEFAULT_AVATAR);
+            }
+            return user;
+        }
+        return null;
     }
 
 
@@ -177,15 +181,15 @@ public class UserServiceImpl implements UserService {
         String avatarName = FileUtil.randomFileName(avatar);
         System.out.println(avatarName);
         // 拼凑文件路径
-        String path = FileUploadConstant.ROOT_PATH + FileUploadConstant.AVATAR_PATH + avatarName;
+        String path = FileConstant.ROOT_PATH + FileConstant.AVATAR_PATH + avatarName;
         avatar.transferTo(new File(path));
 
         // 更新数据库
-        user.setAvatar(FileUploadConstant.AVATAR_PATH + avatarName);
+        user.setAvatar(FileConstant.AVATAR_PATH + avatarName);
         userMapper.updateById(user);
 
         // 返回新路径
-        return FileUploadConstant.AVATAR_PATH + avatarName;
+        return FileConstant.AVATAR_PATH + avatarName;
     }
 
 

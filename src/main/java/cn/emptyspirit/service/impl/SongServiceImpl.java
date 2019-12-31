@@ -2,13 +2,17 @@ package cn.emptyspirit.service.impl;
 
 import cn.emptyspirit.entity.Song;
 import cn.emptyspirit.entity.SongListAndSong;
+import cn.emptyspirit.entity.expand.SongExpand;
+import cn.emptyspirit.mapper.SingerMapper;
 import cn.emptyspirit.mapper.SongListAndSongMapper;
 import cn.emptyspirit.mapper.SongMapper;
 import cn.emptyspirit.service.SongService;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.github.pagehelper.ISelect;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -26,12 +30,17 @@ import java.util.List;
 public class SongServiceImpl implements SongService {
     private SongMapper songMapper;
     private SongListAndSongMapper songListAndSongMapper;
+    private SingerMapper singerMapper;
 
     @Autowired
-    public SongServiceImpl(SongMapper songMapper, SongListAndSongMapper songListAndSongMapper) {
+    public SongServiceImpl(SongMapper songMapper, SongListAndSongMapper songListAndSongMapper, SingerMapper singerMapper) {
         this.songMapper = songMapper;
         this.songListAndSongMapper = songListAndSongMapper;
+        this.singerMapper = singerMapper;
     }
+
+
+
 
     /**
      * 查询所有歌曲
@@ -40,10 +49,17 @@ public class SongServiceImpl implements SongService {
      * @throws Exception
      */
     @Override
-    @Cacheable(cacheNames = {"songs"})
-    public PageInfo<Song> getSongs(Integer pageNum, Integer pageSize) throws Exception {
+    public PageInfo<SongExpand> getSongs(Integer pageNum, Integer pageSize) throws Exception {
         Wrapper<Song> wrapper = Wrappers.<Song>lambdaQuery();
-        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> songMapper.selectList(wrapper));
+        PageHelper.startPage(pageNum, pageSize);
+        List<Song> songList = songMapper.selectList(wrapper);
+        List<SongExpand> songExpandList = new LinkedList<>();
+        for (Song s : songList) {
+            SongExpand songExpand = new SongExpand();
+            BeanUtils.copyProperties(s, songExpand);
+            songExpand.setSinger(singerMapper.selectById(s.getSingerId()));
+        }
+        return new PageInfo<>(songExpandList);
     }
 
     /**
@@ -93,6 +109,7 @@ public class SongServiceImpl implements SongService {
     @Override
     public PageInfo<Song> getSongsBySongList(Integer songlistid, Integer pageNum, Integer pageSize) throws Exception {
         List<SongListAndSong> list = songListAndSongMapper.selectList(Wrappers.<SongListAndSong>lambdaQuery().eq(SongListAndSong::getSonglistId, songlistid));
+
         if (list.isEmpty()){
             return null;
         }else {
