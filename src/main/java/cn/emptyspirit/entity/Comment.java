@@ -19,10 +19,10 @@ public class Comment {
     private Integer id;
 
     /**
-     * song_id
-     * 歌曲id
+     * parent_id
+     * 评论所在的歌曲id，或者它父级评论的id
      */
-    private Integer songId;
+    private Integer parentId;
 
     /**
      * user_id
@@ -41,5 +41,11 @@ public class Comment {
      * 评论时间
      */
     private Date createTime;
+
+    /**
+     * root_id
+     * 此评论所属的根评论id，若此评论为一级评论，则此属性为0
+     */
+    private Integer rootId;
 
 }

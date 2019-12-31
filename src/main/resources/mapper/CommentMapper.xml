@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.emptyspirit.mapper.CommentMapper">
+
+    <!--封装一级评论的查询结果-->
+    <resultMap id="OneLevelCommentsMap" type="cn.emptyspirit.entity.expand.CommentExpand">
+        <id property="id" column="id" />
+        <result property="content" column="content" />
+        <result property="userId" column="user_id" />
+        <result property="createTime" column="create_time" />
+        <result property="replyNum" column="replyNum" />
+        <association property="sendUser" javaType="cn.emptyspirit.entity.User">
+            <result property="userName" column="user_name" />
+            <result property="avatar" column="avatar" />
+        </association>
+    </resultMap>
+
+    <!--查询一级评论-->
+    <select id="selectCommentsBySongId" parameterType="Integer"
+            resultMap="OneLevelCommentsMap">
+        select
+                a.id,
+                a.content,
+                a.create_time,
+                a.user_id,
+                b.user_name,
+                b.avatar,
+                c.replyNum
+        from
+                t_comment a
+                inner join t_user b on a.root_id = 0 and a.parent_id = #{value } and a.user_id = b.id
+                left join
+                    (select root_id, count(0) replyNum from t_comment where root_id != 0 group by root_id) c
+                on c.root_id = a.id
+        order by
+            a.create_time desc
+    </select>
+
+
+    <!--回复评论的结果集映射-->
+    <resultMap id="CommentReplyMap" type="cn.emptyspirit.entity.expand.CommentExpand">
+        <id property="id" column="id" />
+        <result property="content" column="content" />
+        <result property="createTime" column="create_time" />
+        <!--发起评论的用户信息-->
+        <association property="sendUser" javaType="cn.emptyspirit.entity.User">
+            <result property="id" column="s_uid"/>
+            <result property="userName" column="s_uname"/>
+            <result property="avatar" column="s_avatar"/>
+        </association>
+        <!--被回复的用户信息-->
+        <association property="parentUser" javaType="cn.emptyspirit.entity.User">
+            <result property="id" column="p_uid"/>
+            <result property="userName" column="p_uname"/>
+            <result property="avatar" column="p_avatar"/>
+        </association>
+    </resultMap>
+    <!--查询评论对应的回复-->
+    <select id="selectReplyByCommentId" parameterType="Integer" resultMap="CommentReplyMap">
+        select
+            a.id,
+            a.content,
+            a.create_time,
+            a.user_id s_uid,
+            b.user_name s_uname,
+            b.avatar s_avatar,
+            d.id p_uid,
+            d.user_name p_uname,
+            d.avatar p_avatar
+        from
+            t_comment a
+            inner join t_user b on a.root_id = 9 and a.user_id = b.id
+            left join t_comment c on  c.id = a.parent_id
+            left join t_user d on d.id = c.user_id
+        order by
+            a.create_time desc
+    </select>
+</mapper>
