@@ -35,7 +35,8 @@ public class CommentController {
     @PostMapping("/createComment")
     public R createComment(Comment comment, HttpSession session) throws Exception{
         User user = (User) session.getAttribute("user");
-        return commentServcie.insertNewComment(comment, user.getId()) > 0 ? R.ok("评论成功") : R.error("评论失败");
+        return commentServcie.insertNewComment(comment, user.getId()) > 0
+                ? R.ok("评论成功") : R.error("评论失败");
     }
 
 
