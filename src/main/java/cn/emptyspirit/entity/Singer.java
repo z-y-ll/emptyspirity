@@ -3,11 +3,15 @@ package cn.emptyspirit.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 
+import java.io.Serializable;
+
 @Data
 @ToString
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("t_singer")
-public class Singer {
+public class Singer implements Serializable {
     /**
      * id
      * 自增id

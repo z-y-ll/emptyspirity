@@ -19,7 +19,6 @@ spring:
       max-file-size: 10MB
   resources:
     static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:D:/emptyspirit/
-
 #DAO
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml

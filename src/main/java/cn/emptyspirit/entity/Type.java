@@ -6,6 +6,8 @@ import lombok.*;
 @Data
 @Builder
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @TableName("t_type")
 public class Type {
     /**

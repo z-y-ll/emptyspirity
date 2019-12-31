@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.emptyspirit.mapper.SingerMapper">
+
+    <select id="getSingsByLike" resultType="singer">
+        SELECT
+               a.id,
+               a.singer_name,
+               a.avatar,
+               a.gender,
+               a.age,
+               a.introduction
+        FROM
+             t_singer a
+                 INNER JOIN (
+                            SELECT
+                                   singer_id,
+                                   COUNT(*) like_num
+                            FROM
+                                 t_user_singer
+                            GROUP BY
+                                     singer_id
+                            ) b ON a.id = b.singer_id
+        ORDER BY
+                 b.like_num DESC
+    </select>
+
+</mapper>

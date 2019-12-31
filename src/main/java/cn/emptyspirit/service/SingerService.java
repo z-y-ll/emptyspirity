@@ -11,17 +11,31 @@ import java.util.List;
  */
 public interface SingerService {
     /**
-     * 查询所有的歌手
+     * 查询所有的歌手(默认顺序)
      * @return
      * @throws Exception
      */
-    List<Singer> getSingers() throws Exception;
+    List<Singer> getSingersById() throws Exception;
 
     /**
-     * 根据歌手的名称来查询歌手
-     * @param singerName
+     * 根据受欢迎度查询歌手
      * @return
      * @throws Exception
      */
-    Singer getSingerByName(String singerName) throws Exception;
+    List<Singer> getSingersByLike() throws Exception;
+    /**
+     * 根据歌手的id来查询歌手
+     * @param singerId
+     * @return
+     * @throws Exception
+     */
+    Singer getSingerByName(String singerId) throws Exception;
+
+    /**
+     * 根据姓名模糊查询歌手
+     * @param singername
+     * @return
+     * @throws Exception
+    List<Singer> getSingersLikeName(String singername) throws Exception;
+    */
 }

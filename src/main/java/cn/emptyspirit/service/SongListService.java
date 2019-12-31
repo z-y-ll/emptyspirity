@@ -2,6 +2,7 @@ package cn.emptyspirit.service;
 
 import cn.emptyspirit.entity.SongList;
 
+import javax.print.attribute.IntegerSyntax;
 import java.util.List;
 
 /**
@@ -16,4 +17,12 @@ public interface SongListService {
      * @throws Exception
      */
     List<SongList> getSongLists() throws Exception;
+
+    /**
+     * 根据id查询歌单
+     * @param songlistid
+     * @return
+     * @throws Exception
+     */
+    SongList getSongListById(Integer songlistid) throws Exception;
 }

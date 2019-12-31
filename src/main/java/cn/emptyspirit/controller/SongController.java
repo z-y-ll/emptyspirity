@@ -24,14 +24,36 @@ public class SongController {
     }
 
     /**
-     * 查询所有歌曲
+     * 查询所有歌曲(默认排序)
      * @return
      * @throws Exception
      */
-    @GetMapping("/getSongs")
-    public R getSongs(@RequestParam(defaultValue = "1") Integer pageNum,
+    @GetMapping("/getSongsOrderById")
+    public R getSongsByid(@RequestParam(defaultValue = "1") Integer pageNum,
                       @RequestParam(defaultValue = "5") Integer pageSize) throws Exception{
-        PageInfo<SongExpand> pageInfo = songService.getSongs(pageNum, pageSize);
+        PageInfo<SongExpand> pageInfo = songService.getSongsById(pageNum, pageSize);
+        return pageInfo.getTotal() == 0 ? R.no() : R.ok(pageInfo);
+    }
+    /**
+     * 查询所有歌曲(喜好排序)
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/getSongsOrderByLike")
+    public R getSongsByLike(@RequestParam(defaultValue = "1") Integer pageNum,
+                      @RequestParam(defaultValue = "5") Integer pageSize) throws Exception{
+        PageInfo<SongExpand> pageInfo = songService.getSongsByLike(pageNum, pageSize);
+        return pageInfo.getTotal() == 0 ? R.no() : R.ok(pageInfo);
+    }
+    /**
+     * 查询所有歌曲(播放量排序)
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/getSongsOrderByPlay")
+    public R getSongsByPlay(@RequestParam(defaultValue = "1") Integer pageNum,
+                      @RequestParam(defaultValue = "5") Integer pageSize) throws Exception{
+        PageInfo<SongExpand> pageInfo = songService.getSongsByPlay(pageNum, pageSize);
         return pageInfo.getTotal() == 0 ? R.no() : R.ok(pageInfo);
     }
     /**
@@ -40,11 +62,11 @@ public class SongController {
      * @return
      * @throws Exception
      */
-    @GetMapping("/getSongsByTypeid/{typeid}")
-    public R getSongsByType(@PathVariable("typeid") Integer typeid,
+    @GetMapping("/getSongsByTypeid/{typeId}")
+    public R getSongsByType(@PathVariable("typeId") Integer typeid,
                             @RequestParam(defaultValue = "1") Integer pageNum,
                             @RequestParam(defaultValue = "5") Integer pageSize) throws Exception {
-        PageInfo<Song> pageInfo = songService.getSongsByType(typeid, pageNum, pageSize);
+        PageInfo<SongExpand> pageInfo = songService.getSongsByType(typeid, pageNum, pageSize);
         return pageInfo.getTotal() == 0 ? R.no() : R.ok(pageInfo);
     }
 
@@ -65,11 +87,11 @@ public class SongController {
      * @return
      * @throws Exception
      */
-    @GetMapping("/getSongsBySingerid/{singerid}")
-    public R getSongsBySinger(@PathVariable("singerid") Integer singerid,
+    @GetMapping("/getSongsBySingerid/{singerId}")
+    public R getSongsBySinger(@PathVariable("singerId") Integer singerid,
                               @RequestParam(defaultValue = "1") Integer pageNum,
                               @RequestParam(defaultValue = "5") Integer pageSize) throws Exception {
-        PageInfo<Song> pageInfo = songService.getSongsBySinger(singerid, pageNum, pageSize);
+        PageInfo<SongExpand> pageInfo = songService.getSongsBySinger(singerid, pageNum, pageSize);
         return pageInfo.getTotal() == 0 ? R.no() : R.ok(pageInfo);
     }
 
@@ -83,8 +105,24 @@ public class SongController {
     public R getSongsBySongList(@PathVariable("songlistid") Integer songlistid,
                                 @RequestParam(defaultValue = "1") Integer pageNum,
                                 @RequestParam(defaultValue = "5") Integer pageSize) throws Exception{
-        PageInfo<Song> pageInfo = songService.getSongsBySongList(songlistid, pageNum, pageSize);
+        PageInfo<SongExpand> pageInfo = songService.getSongsBySongList(songlistid, pageNum, pageSize);
         return pageInfo.getTotal() == 0 ? R.no() : R.ok(pageInfo);
     }
 
+    /**
+     * 根据歌曲名称模糊查询
+     * @param songname
+     * @param pageNum
+     * @param pageSize
+     * @return
+     * @throws Exception
+
+    @GetMapping("/getSongsLikeName")
+    public R getSongsLikeName(String songname,
+                              @RequestParam(defaultValue = "1") Integer pageNum,
+                              @RequestParam(defaultValue = "5") Integer pageSize) throws Exception {
+        PageInfo<SongExpand> pageInfo = songService.getSongsLikeName(songname, pageNum, pageSize);
+        return pageInfo.getTotal() == 0 ? R.no() : R.ok(pageInfo);
+    }
+    */
 }

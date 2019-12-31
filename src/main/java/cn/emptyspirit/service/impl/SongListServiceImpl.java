@@ -32,8 +32,19 @@ public class SongListServiceImpl implements SongListService {
      * @throws Exception
      */
     @Override
-    @Cacheable(cacheNames = "songlists")
     public List<SongList> getSongLists() throws Exception {
         return songListMapper.selectList(Wrappers.<SongList>lambdaQuery().orderByDesc(SongList::getLikeNumbers));
+    }
+
+    /**
+     * 根据id查询歌单
+     *
+     * @param songlistid
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public SongList getSongListById(Integer songlistid) throws Exception {
+        return songListMapper.selectById(songlistid);
     }
 }

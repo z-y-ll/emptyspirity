@@ -32,7 +32,6 @@ public class TypeServiceImpl implements TypeService{
      * @throws Exception
      */
     @Override
-    @Cacheable(cacheNames = "{types}")
     public List<Type> getTypes() throws Exception {
         return typeMapper.selectList(Wrappers.emptyWrapper());
     }

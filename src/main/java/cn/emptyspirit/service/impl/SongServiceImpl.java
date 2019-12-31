@@ -1,24 +1,13 @@
 package cn.emptyspirit.service.impl;
 
-import cn.emptyspirit.entity.Song;
-import cn.emptyspirit.entity.SongListAndSong;
 import cn.emptyspirit.entity.expand.SongExpand;
-import cn.emptyspirit.mapper.SingerMapper;
-import cn.emptyspirit.mapper.SongListAndSongMapper;
+import cn.emptyspirit.exception.ParamException;
 import cn.emptyspirit.mapper.SongMapper;
 import cn.emptyspirit.service.SongService;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.github.pagehelper.ISelect;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-
-import java.util.LinkedList;
-import java.util.List;
 
 
 /**
@@ -29,96 +18,115 @@ import java.util.List;
 @Service
 public class SongServiceImpl implements SongService {
     private SongMapper songMapper;
-    private SongListAndSongMapper songListAndSongMapper;
-    private SingerMapper singerMapper;
 
     @Autowired
-    public SongServiceImpl(SongMapper songMapper, SongListAndSongMapper songListAndSongMapper, SingerMapper singerMapper) {
+    public SongServiceImpl(SongMapper songMapper) {
         this.songMapper = songMapper;
-        this.songListAndSongMapper = songListAndSongMapper;
-        this.singerMapper = singerMapper;
     }
 
-
-
-
     /**
-     * 查询所有歌曲
-     *
+     * 查询所有歌曲(默认排序)
+     * @param pageNum
+     * @param pageSize
      * @return
      * @throws Exception
      */
     @Override
-    public PageInfo<SongExpand> getSongs(Integer pageNum, Integer pageSize) throws Exception {
-        Wrapper<Song> wrapper = Wrappers.<Song>lambdaQuery();
-        PageHelper.startPage(pageNum, pageSize);
-        List<Song> songList = songMapper.selectList(wrapper);
-        List<SongExpand> songExpandList = new LinkedList<>();
-        for (Song s : songList) {
-            SongExpand songExpand = new SongExpand();
-            BeanUtils.copyProperties(s, songExpand);
-            songExpand.setSinger(singerMapper.selectById(s.getSingerId()));
-        }
-        return new PageInfo<>(songExpandList);
+    public PageInfo<SongExpand> getSongsById(Integer pageNum, Integer pageSize) throws Exception {
+       return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> songMapper.getSongsById());
+    }
+
+    /**
+     * 获取所有歌曲(根据受欢迎度排序)
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public PageInfo<SongExpand> getSongsByLike(Integer pageNum, Integer pageSize) throws Exception {
+        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> songMapper.getSongsByLike());
+    }
+
+    /**
+     * 获取所有歌曲(根据播放量排序)
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public PageInfo<SongExpand> getSongsByPlay(Integer pageNum, Integer pageSize) throws Exception {
+        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> songMapper.getSongsByPlay());
     }
 
     /**
      * 根据类型id分类歌曲
-     *
      * @param typeid
+     * @param pageNum
+     * @param pageSize
      * @return
      * @throws Exception
      */
     @Override
-    public PageInfo<Song> getSongsByType(Integer typeid, Integer pageNum, Integer pageSize) throws Exception {
-        Wrapper<Song> wrapper = Wrappers.<Song>lambdaQuery().eq(Song::getId, typeid);
-        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> songMapper.selectList(wrapper));
+    public PageInfo<SongExpand> getSongsByType(Integer typeid, Integer pageNum, Integer pageSize) throws Exception {
+        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> songMapper.getSongsByType(typeid));
     }
 
     /**
      * 根据id查询歌曲
-     *
+     * @param id
      * @return
      * @throws Exception
      */
     @Override
-    public Song getSongById(Integer id) throws Exception {
-        return songMapper.selectById(id);
+    public SongExpand getSongById(Integer id) throws Exception {
+        return songMapper.getSongById(id);
     }
 
     /**
      * 根据歌手id来查询歌曲
-     *
      * @param singerid
+     * @param pageNum
+     * @param pageSize
      * @return
      * @throws Exception
      */
     @Override
-    public PageInfo<Song> getSongsBySinger(Integer singerid, Integer pageNum, Integer pageSize) throws Exception {
-        Wrapper<Song> wrapper = Wrappers.<Song>lambdaQuery().eq(Song::getId, singerid);
-        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> songMapper.selectList(wrapper));
+    public PageInfo<SongExpand> getSongsBySinger(Integer singerid, Integer pageNum, Integer pageSize) throws Exception {
+        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> songMapper.getSongsBySinger(singerid));
     }
 
     /**
      * 通过歌单的id来查询歌曲
-     *
      * @param songlistid
+     * @param pageNum
+     * @param pageSize
      * @return
      * @throws Exception
      */
     @Override
-    public PageInfo<Song> getSongsBySongList(Integer songlistid, Integer pageNum, Integer pageSize) throws Exception {
-        List<SongListAndSong> list = songListAndSongMapper.selectList(Wrappers.<SongListAndSong>lambdaQuery().eq(SongListAndSong::getSonglistId, songlistid));
-
-        if (list.isEmpty()){
-            return null;
-        }else {
-            List<Integer> ids = new LinkedList<>();
-            for (SongListAndSong songlistandsong : list ) {
-                ids.add(songlistandsong.getSongId());
-            }
-            return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> songMapper.selectBatchIds(ids));
-        }
+    public PageInfo<SongExpand> getSongsBySongList(Integer songlistid, Integer pageNum, Integer pageSize) throws Exception {
+        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> songMapper.getSongsBySongList(songlistid));
     }
+
+    /**
+     * 根据歌曲名字模糊查询
+     *
+     * @param songname
+     * @param pageNum
+     * @param pageSize
+     * @return
+     * @throws Exception
+    @Override
+    public PageInfo<SongExpand> getSongsLikeName(String songname, Integer pageNum, Integer pageSize) throws Exception {
+        if (songname == null){
+            throw  new ParamException();
+        }
+        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> songMapper.getSongsLikeName(songname));
+    }
+    */
 }
 

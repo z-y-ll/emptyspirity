@@ -4,10 +4,7 @@ import cn.emptyspirit.entity.SongList;
 import cn.emptyspirit.global.R;
 import cn.emptyspirit.service.SongListService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,5 +33,17 @@ public class SongListController {
     public R getSongLists() throws Exception {
         List<SongList> songLists = songListService.getSongLists();
         return songLists.isEmpty() ? R.no() : R.ok(songLists);
+    }
+
+    /**
+     * 根据查询歌单
+     * @param songlistid
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/getSongListById/{songlistid}")
+    public R getSongById(@PathVariable("songlistid") Integer songlistid) throws Exception {
+        SongList songList = songListService.getSongListById(songlistid);
+        return songList == null ? R.no() : R.ok(songList);
     }
 }

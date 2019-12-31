@@ -6,6 +6,8 @@ import lombok.*;
 @Data
 @ToString
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("t_songlist_song")
 public class SongListAndSong {
     /**

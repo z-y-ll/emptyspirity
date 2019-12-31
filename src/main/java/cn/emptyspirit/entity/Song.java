@@ -1,5 +1,6 @@
 package cn.emptyspirit.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 
@@ -66,7 +67,7 @@ public class Song {
 
     /**
      * singer_id
-     * 歌曲id
+     * 歌手id
      */
     private Integer singerId;
 

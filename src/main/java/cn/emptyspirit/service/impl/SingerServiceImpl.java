@@ -1,8 +1,10 @@
 package cn.emptyspirit.service.impl;
 
 import cn.emptyspirit.entity.Singer;
+import cn.emptyspirit.exception.ParamException;
 import cn.emptyspirit.mapper.SingerMapper;
 import cn.emptyspirit.service.SingerService;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -31,19 +33,45 @@ public class SingerServiceImpl implements SingerService {
      * @throws Exception
      */
     @Override
-    @Cacheable(cacheNames = {"singers"})
-    public List<Singer> getSingers() throws Exception {
-        return singerMapper.selectList(Wrappers.emptyWrapper());
+    public List<Singer> getSingersById() throws Exception {
+        return singerMapper.selectList(Wrappers.<Singer>lambdaQuery());
     }
 
     /**
-     * 根据歌手的名称来查询歌手
+     * 根据受欢迎度查询歌手
      *
      * @return
      * @throws Exception
      */
     @Override
-    public Singer getSingerByName(String singerName) throws Exception {
-        return singerMapper.selectOne(Wrappers.<Singer>lambdaQuery().eq(Singer::getSingerName, singerName));
+    public List<Singer> getSingersByLike() throws Exception {
+        return singerMapper.getSingsByLike();
     }
+
+    /**
+     * 根据歌手的id来查询歌手
+     *
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Singer getSingerByName(String singerId) throws Exception {
+        return singerMapper.selectById(singerId);
+    }
+
+    /**
+     * 根据姓名模糊查询歌手
+     *
+     * @param singername
+     * @return
+     * @throws Exception
+    @Override
+    public List<Singer> getSingersLikeName(String singername) throws Exception {
+        if (singername == null){
+            throw new ParamException();
+        }
+        Wrapper<Singer> wrapper = Wrappers.<Singer>lambdaQuery().like(Singer::getSingerName, singername);
+        return singerMapper.selectList(wrapper);
+    }
+    */
 }

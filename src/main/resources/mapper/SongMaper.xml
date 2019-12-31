@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.emptyspirit.mapper.SongMapper">
+    <!--查询歌曲包含歌手的名称的结果集映射-->
+    <resultMap id="SongsAndSinger" type="cn.emptyspirit.entity.expand.SongExpand">
+        <id property="id" column="id" />
+        <result property="songName" column="song_name" />
+        <result property="songUrl" column="song_url"/>
+        <result property="playTime" column="play_time" />
+        <result property="songWord" column="song_word"/>
+        <result property="songPhoto" column="song_photo"/>
+        <association property="singer" column="singer_name"
+                     javaType="cn.emptyspirit.entity.Singer">
+            <result property="singerName" column="singer_name" />
+        </association>
+    </resultMap>
+
+    <select id="getSongsById" resultMap="SongsAndSinger">
+        SELECT
+               a.id,
+               a.song_name,
+               a.song_url,
+               a.play_time,
+               a.song_word,
+               a.song_photo,
+               b.singer_name
+        FROM
+             t_song a
+                 LEFT JOIN t_singer b ON a.singer_id = b.id
+    </select>
+
+    <select id="getSongsByLike" resultMap="SongsAndSinger">
+        SELECT
+               a.id,
+               a.song_name,
+               a.song_url,
+               a.play_time,
+               a.song_word,
+               a.song_photo,
+               a.like_number,
+               b.singer_name
+        FROM
+             t_song a
+                 LEFT JOIN t_singer b ON a.singer_id = b.id
+        ORDER BY
+                 a.like_number DESC
+    </select>
+
+    <select id="getSongsByPlay" resultMap="SongsAndSinger">
+        SELECT
+               a.id,
+               a.song_name,
+               a.song_url,
+               a.play_time,
+               a.song_word,
+               a.song_photo,
+               b.singer_name
+        FROM
+             t_song a
+                 LEFT JOIN t_singer b ON a.singer_id = b.id
+        ORDER BY
+                 a.play_number DESC
+    </select>
+
+    <select id="getSongsByType" parameterType="int" resultMap="SongsAndSinger">
+        SELECT
+               a.id,
+               a.song_name,
+               a.song_url,
+               a.play_time,
+               a.song_word,
+               a.song_photo,
+               b.singer_name
+        FROM
+             t_song a
+                 LEFT JOIN t_singer b ON a.singer_id = b.id
+        WHERE
+                a.song_type = #{typeid}
+
+    </select>
+
+    <select id="getSongById" parameterType="int" resultMap="SongsAndSinger">
+        SELECT
+               a.id,
+               a.song_name,
+               a.song_url,
+               a.play_time,
+               a.song_word,
+               a.song_photo,
+               b.singer_name
+        FROM
+             t_song a
+                 LEFT JOIN t_singer b ON a.singer_id = b.id
+        WHERE
+                a.id = #{id}
+    </select>
+
+    <select id="getSongsBySinger" parameterType="int" resultMap="SongsAndSinger">
+        SELECT
+               a.id,
+               a.song_name,
+               a.song_url,
+               a.play_time,
+               a.song_word,
+               a.song_photo,
+               b.singer_name
+        FROM
+             t_song a
+                 LEFT JOIN t_singer b ON a.singer_id = b.id
+        WHERE
+                a.singer_id = #{singerid}
+    </select>
+
+    <select id="getSongsBySongList" parameterType="int" resultMap="SongsAndSinger">
+        SELECT
+               a.id,
+               a.song_name,
+               a.song_url,
+               a.play_time,
+               a.song_word,
+               a.song_photo,
+               c.singer_name
+        FROM
+             t_song a
+                 LEFT JOIN t_songlist_song b ON a.id = b.song_id
+                 LEFT JOIN t_singer c ON a.singer_id = c.id
+        WHERE
+                b.songlist_id = #{songlistid}
+    </select>
+
+    <select id="getSongsLikeName" parameterType="string" resultMap="SongsAndSinger">
+        SELECT
+               a.id,
+               a.song_name,
+               a.song_url,
+               a.play_time,
+               a.song_word,
+               a.song_photo,
+               b.singer_name
+        FROM
+             t_song a
+                 LEFT JOIN t_singer b ON a.singer_id = b.id
+        <where>
+              song_name LIKE CONCAT('%', #{songname}, '%')
+        </where>
+    </select>
+</mapper>
