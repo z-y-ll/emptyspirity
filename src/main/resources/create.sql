@@ -71,6 +71,7 @@ CREATE TABLE `t_songlist`  (
   `songlist_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '歌单名称',
   `introduction` varchar(5000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '歌单介绍',
   `like_numbers` int(11) DEFAULT 0 COMMENT '歌单收藏量',
+  `image_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '歌单图片路径',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE =  utf8_general_ci ROW_FORMAT = Dynamic;
 

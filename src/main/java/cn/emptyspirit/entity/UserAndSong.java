@@ -1,15 +1,13 @@
 package cn.emptyspirit.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Builder
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("t_user_song")
 public class UserAndSong {
     /**

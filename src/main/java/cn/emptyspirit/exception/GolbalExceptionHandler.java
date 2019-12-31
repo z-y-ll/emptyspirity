@@ -20,4 +20,12 @@ public class GolbalExceptionHandler {
         return R.error(e.getCode(), e.getMessage());
     }
 
+
+
+    @ExceptionHandler(Exception.class)
+    public R ExceptionHandler(Exception e) {
+        e.printStackTrace();
+        return R.error(-1, "发生异常");
+    }
+
 }
