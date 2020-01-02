@@ -1,6 +1,7 @@
 package cn.emptyspirit.service.impl;
 
 import cn.emptyspirit.entity.SongList;
+import cn.emptyspirit.entity.expand.SongListExpand;
 import cn.emptyspirit.mapper.SongListMapper;
 import cn.emptyspirit.service.SongListService;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -32,19 +33,19 @@ public class SongListServiceImpl implements SongListService {
      * @throws Exception
      */
     @Override
-    public List<SongList> getSongLists() throws Exception {
-        return songListMapper.selectList(Wrappers.<SongList>lambdaQuery().orderByDesc(SongList::getLikeNumbers));
+    public List<SongListExpand> getSongLists() throws Exception {
+        return songListMapper.getSongLists();
     }
 
     /**
      * 根据id查询歌单
      *
-     * @param songlistid
+     * @param songlistid 歌单id
      * @return
      * @throws Exception
      */
     @Override
-    public SongList getSongListById(Integer songlistid) throws Exception {
-        return songListMapper.selectById(songlistid);
+    public SongListExpand getSongListById(Integer songlistid) throws Exception {
+        return songListMapper.selectSongListById(songlistid);
     }
 }

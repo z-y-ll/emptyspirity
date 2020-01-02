@@ -1,5 +1,6 @@
 package cn.emptyspirit.service.impl;
 
+import cn.emptyspirit.entity.Song;
 import cn.emptyspirit.entity.expand.SongExpand;
 import cn.emptyspirit.exception.ParamException;
 import cn.emptyspirit.mapper.SongMapper;
@@ -83,6 +84,9 @@ public class SongServiceImpl implements SongService {
      */
     @Override
     public SongExpand getSongById(Integer id) throws Exception {
+        Song song = songMapper.selectById(id);
+        song.setPlayNumber(song.getPlayNumber() + 1);
+        songMapper.updateById(song);
         return songMapper.getSongById(id);
     }
 

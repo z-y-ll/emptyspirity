@@ -64,14 +64,14 @@ public class CommentServcieImpl implements CommentServcie {
             }
         } else {
             // 若为回复评论，则判断父级评论是否存在
-            Comment c = commentMapper.selectById(parentId);
+            Comment c = commentMapper.selectUnDelCommentById(parentId);
             if (c == null) {
                 throw new ParamException("评论信息异常");
             }
             // 不能回复自己的评论
-            if (userId == c.getUserId()) {
-                throw new ParamException("无法回复自己的评论");
-            }
+//            if (userId == c.getUserId()) {
+//                throw new ParamException("无法回复自己的评论");
+//            }
         }
 
         // 插入数据库
@@ -115,13 +115,34 @@ public class CommentServcieImpl implements CommentServcie {
         }
 
         // 判断评论是否存在，且是否为一级评论
-        Comment comment = commentMapper.selectById(commentId);
+        Comment comment = commentMapper.selectUnDelCommentById(commentId);
         if (comment == null || comment.getRootId() != 0) {
             throw new ParamException("评论信息异常");
         }
 
         // 查询
         return commentMapper.selectReplyByCommentId(commentId);
+    }
+
+
+    /**
+     * 删除一条评论
+     * @param commentId 评论id
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Integer deleteComment(Integer commentId) throws Exception {
+        if (commentId == null) {
+            throw new ParamException();
+        }
+
+        // 判断评论是否存在
+        Comment comment = commentMapper.selectUnDelCommentById(commentId);
+        if (comment == null ) {
+            throw new ParamException("评论信息异常");
+        }
+        return commentMapper.updateCommentToDel(commentId);
     }
 
 }

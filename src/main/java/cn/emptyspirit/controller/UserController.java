@@ -45,28 +45,29 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
-    public R login(String username, String password, HttpSession session) throws Exception {
+    public R login(String username, String password/*, HttpSession session*/) throws Exception {
         User user = userService.selectUserByNameAndPwd(username, password);
         if (user != null) {
-            session.setAttribute("user", user);
+//            session.setAttribute("user", user);
+//            System.out.println(session.getId() + "---- login");
             return R.ok(user);
         }
-        return R.no("用户名或密码错误");
+        return R.error("用户名或密码错误");
     }
 
 
     /**
      * 用户登出
      */
-    @GetMapping("/logout")
-    public R logout(HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return R.error("请先登录");
-        }
-        session.removeAttribute("user");
-        return R.ok("退出成功");
-    }
+//    @GetMapping("/logout")
+//    public R logout(HttpSession session) {
+//        User user = (User) session.getAttribute("user");
+//        if (user == null) {
+//            return R.error("请先登录");
+//        }
+//        session.removeAttribute("user");
+//        return R.ok("退出成功");
+//    }
 
 
     /**
@@ -77,19 +78,6 @@ public class UserController {
     @GetMapping("/getUserById/{userId}")
     public R getUserById(@PathVariable("userId") Integer userId) throws Exception {
         User user = userService.getUserById(userId);
-        return user == null ? R.no() : R.ok(user);
-    }
-
-
-    /**
-     * 获取用户信息
-     * 从session中获取
-     * @return
-     * @throws Exception
-     */
-    @GetMapping("/getUserInfo")
-    public R getUserInfo(HttpSession session) throws Exception {
-        User user = (User) session.getAttribute("user");
         return user == null ? R.no() : R.ok(user);
     }
 
@@ -111,13 +99,9 @@ public class UserController {
      * @return
      */
     @PostMapping("/changePassword")
-    public R changePassword(String newPassword, HttpSession session) throws Exception {
-        User user = (User) session.getAttribute("user");
-
+    public R changePassword(String newPassword, Integer userId) throws Exception {
         //判断修改结果
-        if (userService.updateUserPassword(user.getId(), newPassword)) {
-            // 更新session中的user数据
-            user.setPassword(newPassword);
+        if (userService.updateUserPassword(userId, newPassword)) {
             return R.ok("修改成功");
         }
         return R.error("修改失败");
@@ -127,15 +111,13 @@ public class UserController {
     /**
      * 用户修改头像
      * @param avatar 头像文件
-     * @param session
      * @return
      */
     @PostMapping("changeAvatar")
-    public R changeAvatar(MultipartFile avatar, HttpSession session) throws Exception {
-        User user = (User) session.getAttribute("user");
-        String newPath = userService.changeAvatar(avatar, user.getId());
+    public R changeAvatar(MultipartFile avatar, Integer userId /*HttpSession session*/) throws Exception {
+//        User user = (User) session.getAttribute("user");
+        String newPath = userService.changeAvatar(avatar, userId);
         if (newPath != null && !"".equals(newPath)) {
-            user.setAvatar(newPath);
             return R.ok(newPath);
         }
         return R.error("上传失败");

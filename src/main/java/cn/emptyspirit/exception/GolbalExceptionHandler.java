@@ -21,7 +21,22 @@ public class GolbalExceptionHandler {
     }
 
 
+    /**
+     * 处理自定义异常：未登录异常
+     * @return
+     */
+    @ExceptionHandler(UnLoginException.class)
+    public R paramExceptionHandler(UnLoginException e) {
+        e.printStackTrace();
+        return R.error(e.getCode(), e.getMessage());
+    }
 
+
+    /**
+     * 根异常
+     * @param e
+     * @return
+     */
     @ExceptionHandler(Exception.class)
     public R ExceptionHandler(Exception e) {
         e.printStackTrace();

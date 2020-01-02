@@ -28,7 +28,7 @@
                 c.replyNum
         from
                 t_comment a
-                inner join t_user b on a.root_id = 0 and a.parent_id = #{value } and a.user_id = b.id
+                inner join t_user b on a.comment_del = 0 and a.root_id = 0 and a.parent_id = #{value } and a.user_id = b.id
                 left join
                     (select root_id, count(0) replyNum from t_comment where root_id != 0 group by root_id) c
                 on c.root_id = a.id
@@ -69,7 +69,7 @@
             d.avatar p_avatar
         from
             t_comment a
-            inner join t_user b on a.root_id = 9 and a.user_id = b.id
+            inner join t_user b on a.comment_del = 0 and a.root_id = #{value } and a.user_id = b.id
             left join t_comment c on  c.id = a.parent_id
             left join t_user d on d.id = c.user_id
         order by

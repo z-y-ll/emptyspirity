@@ -15,6 +15,22 @@
         </association>
     </resultMap>
 
+
+    <!--查询歌曲的详细信息，包括歌曲类型和歌手信息-->
+    <resultMap id="SongDetailMap" type="cn.emptyspirit.entity.expand.SongExpand"
+    extends="SongsAndSinger">
+        <result property="songType" column="song_type"/>
+        <result property="likeNumber" column="like_number"/>
+        <result property="playNumber" column="play_number"/>
+        <result property="singerId" column="singer_id" />
+        <!--评论量-->
+        <result property="commentNum" column="commentNum"/>
+        <association property="type" javaType="cn.emptyspirit.entity.Type">
+            <result property="name" column="type_name"/>
+        </association>
+    </resultMap>
+
+
     <select id="getSongsById" resultMap="SongsAndSinger">
         SELECT
                a.id,
@@ -79,20 +95,19 @@
 
     </select>
 
-    <select id="getSongById" parameterType="int" resultMap="SongsAndSinger">
+    <select id="getSongById" parameterType="int" resultMap="SongDetailMap">
         SELECT
-               a.id,
-               a.song_name,
-               a.song_url,
-               a.play_time,
-               a.song_word,
-               a.song_photo,
-               b.singer_name
+             a.*,
+             b.singer_name,
+             c.name type_name,
+             d.commentNum
         FROM
              t_song a
-                 LEFT JOIN t_singer b ON a.singer_id = b.id
-        WHERE
-                a.id = #{id}
+             inner JOIN t_singer b ON a.id = 2 and a.singer_id = b.id
+             left join t_type c on c.id = a.song_type
+             left join
+                (select parent_id, count(0) commentNum from t_comment where root_id = 0 group by parent_id) d
+                on d.parent_id = a.id
     </select>
 
     <select id="getSongsBySinger" parameterType="int" resultMap="SongsAndSinger">

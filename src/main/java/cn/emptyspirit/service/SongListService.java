@@ -1,6 +1,7 @@
 package cn.emptyspirit.service;
 
 import cn.emptyspirit.entity.SongList;
+import cn.emptyspirit.entity.expand.SongListExpand;
 
 import javax.print.attribute.IntegerSyntax;
 import java.util.List;
@@ -16,7 +17,7 @@ public interface SongListService {
      * @return
      * @throws Exception
      */
-    List<SongList> getSongLists() throws Exception;
+    List<SongListExpand> getSongLists() throws Exception;
 
     /**
      * 根据id查询歌单
@@ -24,5 +25,5 @@ public interface SongListService {
      * @return
      * @throws Exception
      */
-    SongList getSongListById(Integer songlistid) throws Exception;
+    SongListExpand getSongListById(Integer songlistid) throws Exception;
 }

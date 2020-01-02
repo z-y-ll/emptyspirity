@@ -1,14 +1,12 @@
 package cn.emptyspirit.controller;
 
 import cn.emptyspirit.entity.Comment;
-import cn.emptyspirit.entity.User;
 import cn.emptyspirit.entity.expand.CommentExpand;
 import cn.emptyspirit.global.R;
 import cn.emptyspirit.service.CommentServcie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -16,6 +14,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/comment")
+@CrossOrigin
 public class CommentController {
 
     private CommentServcie commentServcie;
@@ -28,14 +27,13 @@ public class CommentController {
     /**
      * 用户创建一条新评论
      * @param comment 评论的相关消息
-     * @param session
      * @return
      * @throws Exception
      */
     @PostMapping("/createComment")
-    public R createComment(Comment comment, HttpSession session) throws Exception{
-        User user = (User) session.getAttribute("user");
-        return commentServcie.insertNewComment(comment, user.getId()) > 0
+    public R createComment(Comment comment /*HttpSession session*/) throws Exception{
+//        User user = (User) session.getAttribute("user");
+        return commentServcie.insertNewComment(comment, comment.getUserId()) > 0
                 ? R.ok("评论成功") : R.error("评论失败");
     }
 
@@ -71,4 +69,13 @@ public class CommentController {
     }
 
 
+    /**
+     * 删除一条评论
+     * @param commentId 评论id
+     * @return
+     */
+    @PostMapping("deleteComment")
+    public R deleteComment(Integer commentId) throws Exception {
+        return commentServcie.deleteComment(commentId) > 0 ? R.ok("删除成功") : R.error("删除失败");
+    }
 }

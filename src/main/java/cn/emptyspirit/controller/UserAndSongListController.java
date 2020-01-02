@@ -26,42 +26,46 @@ public class UserAndSongListController {
     /**
      * 根据歌单id，收藏歌单
      * @param songListId 歌单id
-     * @param session
      * @return
      */
     @PostMapping("/addFavoriteSongList")
-    public R addFavoriteSongList(Integer songListId, HttpSession session) throws Exception {
-        User user = (User) session.getAttribute("user");
-        return userAndSongListService.addFavoriteSongList(songListId, user.getId()) > 0 ?
-                R.ok("收藏成功") : R.error("收藏失败");
+    public R addFavoriteSongList(Integer songListId, Integer userId/*HttpSession session*/) throws Exception {
+//        User user = (User) session.getAttribute("user");
+        Integer result = userAndSongListService.addFavoriteSongList(songListId, userId);
+        switch (result) {
+            case 1:
+                return R.ok("取消收藏");
+            case 2:
+                return R.ok("收藏成功");
+            default:
+                return R.error("操作异常");
+        }
     }
 
 
     /**
      * 取消收藏歌单，根据歌单id
      * @param songListId
-     * @param session
      * @return
      */
     @PostMapping("/deleteFavoriteSongList")
-    public R deleteFavoriteSongList(Integer songListId, HttpSession session) throws Exception {
-        User user = (User) session.getAttribute("user");
-        return userAndSongListService.deleteFavoriteSongList(songListId, user.getId()) > 0
+    public R deleteFavoriteSongList(Integer songListId, Integer userId/*HttpSession session*/) throws Exception {
+//        User user = (User) session.getAttribute("user");
+        return userAndSongListService.deleteFavoriteSongList(songListId, userId) > 0
                 ? R.ok("取消成功") : R.error("取消失败");
     }
 
 
     /**
      * 获取用户收藏的全部歌单
-     * @param session
      * @return
      * @throws Exception
      */
-    @GetMapping("/getFavoriteSongList")
-    public R getFavoriteSongList(HttpSession session) throws Exception{
-        User user = (User) session.getAttribute("user");
+    @GetMapping("/getFavoriteSongList/{userId}")
+    public R getFavoriteSongList(@PathVariable("userId") Integer userId /*HttpSession session*/) throws Exception{
+//        User user = (User) session.getAttribute("user");
         List<SongListExpand> songList =
-                userAndSongListService.selectFavoriteSongListByUserId(user.getId());
+                userAndSongListService.selectFavoriteSongListByUserId(userId);
         if (songList == null || songList.isEmpty()) {
             return R.no();
         }

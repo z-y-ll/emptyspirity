@@ -1,6 +1,7 @@
 package cn.emptyspirit.controller;
 
 import cn.emptyspirit.entity.SongList;
+import cn.emptyspirit.entity.expand.SongListExpand;
 import cn.emptyspirit.global.R;
 import cn.emptyspirit.service.SongListService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class SongListController {
      */
     @GetMapping("/getSongLists")
     public R getSongLists() throws Exception {
-        List<SongList> songLists = songListService.getSongLists();
+        List<SongListExpand> songLists = songListService.getSongLists();
         return songLists.isEmpty() ? R.no() : R.ok(songLists);
     }
 

@@ -34,9 +34,9 @@ public class UserAndSongController {
      * @throws Exception
      */
     @PostMapping("/addFavoriteSong")
-    public R addFavoriteSong(Integer songId, HttpSession session) throws Exception{
-        User user = (User) session.getAttribute("user");
-        return userAndSongService.addFavoriteSong(songId, user.getId()) > 0 ?
+    public R addFavoriteSong(Integer songId, Integer userId/*HttpSession session*/) throws Exception{
+//        User user = (User) session.getAttribute("user");
+        return userAndSongService.addFavoriteSong(songId, userId) > 0 ?
                 R.ok("收藏成功") : R.error("收藏失败");
     }
 
@@ -48,9 +48,9 @@ public class UserAndSongController {
      */
     @PostMapping("/deleteFavoriteSong")
     public R deleteFavoriteSong(@RequestParam("id") Integer userAndSongId,
-                                HttpSession session) throws Exception {
-        User user = (User) session.getAttribute("user");
-        return userAndSongService.deleteFavoriteSongById(userAndSongId, user.getId()) > 0 ?
+                                Integer userId/*HttpSession session*/) throws Exception {
+//        User user = (User) session.getAttribute("user");
+        return userAndSongService.deleteFavoriteSongById(userAndSongId, userId) > 0 ?
                 R.ok("取消成功") : R.error("取消失败");
     }
 
@@ -61,22 +61,23 @@ public class UserAndSongController {
      * @throws Exception
      */
     @PostMapping("/deleteFavoriteBySongId")
-    public R deleteFavoriteBySongId(Integer songId, HttpSession session) throws Exception {
-        User user = (User) session.getAttribute("user");
-        return userAndSongService.deleteFavoriteBySongId(songId, user.getId()) > 0 ?
+    public R deleteFavoriteBySongId(Integer songId, Integer userId/*HttpSession session*/) throws Exception {
+//        User user = (User) session.getAttribute("user");
+        return userAndSongService.deleteFavoriteBySongId(songId, userId) > 0 ?
                 R.ok("取消成功") : R.error("取消失败");
     }
 
 
     /**
      * 查询用户收藏的歌曲
-     * @param session
+     * @param userId 用户id
      * @return
+     * @throws Exception
      */
-    @GetMapping("/getFavoriteSongs")
-    public R getFavoriteSongs(HttpSession session) throws Exception {
-        User user = (User) session.getAttribute("user");
-        List<SongExpand> songs = userAndSongService.selectFavoriteSongsByUserId(user.getId());
+    @GetMapping("/getFavoriteSongs/{userId}")
+    public R getFavoriteSongs(@PathVariable("userId") Integer userId/*HttpSession session*/) throws Exception {
+//        User user = (User) session.getAttribute("user");
+        List<SongExpand> songs = userAndSongService.selectFavoriteSongsByUserId(userId);
         if (songs == null || songs.isEmpty()) {
             return R.no();
         }
@@ -92,10 +93,10 @@ public class UserAndSongController {
     @GetMapping("/getOnePageFavoriteSongs")
     public R getOnePageFavoriteSongs(@RequestParam(defaultValue = "1") Integer pageNum,
                                      @RequestParam(defaultValue = "2") Integer pageSize,
-                                     HttpSession session) throws Exception {
-        User user = (User) session.getAttribute("user");
+                                     Integer userId /*HttpSession session*/) throws Exception {
+//        User user = (User) session.getAttribute("user");
         PageInfo<SongExpand> pageInfo =
-                userAndSongService.getOnePageFavoriteSongs(pageNum, pageSize, user.getId());
+                userAndSongService.getOnePageFavoriteSongs(pageNum, pageSize, userId);
         return pageInfo.getTotal() == 0 ? R.no() : R.ok(pageInfo);
     }
 

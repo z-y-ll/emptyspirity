@@ -61,11 +61,12 @@ public class SingerController {
      * @param singname
      * @return
      * @throws Exception
-    @GetMapping("/getSingersLikeName")
-    public R getSongsLikeName(String singname) throws Exception{
-        List<Singer> singerList = singerService.getSingersLikeName(singname);
-        return singerList.isEmpty() ? R.no() : R.ok(singerService);
-    }
-    */
+     */
+//    @GetMapping("/getSingersLikeName")
+//    public R getSongsLikeName(String singname) throws Exception{
+//        List<Singer> singerList = singerService.getSingersLikeName(singname);
+//        return singerList.isEmpty() ? R.no() : R.ok(singerService);
+//    }
+
 
 }

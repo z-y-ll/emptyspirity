@@ -59,8 +59,14 @@ public class UserAndSongListServiceImpl implements UserAndSongListService {
         // 判断用户是否已经收藏此歌单
         UserAndSongList userAndSongList =
                 userAndSongListMapper.selectBySongListIdAndUserId(songListId, userId);
+        // 若用户已经收藏此歌单，则提示此操作为取消收藏
         if (userAndSongList != null) {
-            throw new ParamException("请勿重复收藏歌单");
+            // 更新歌单的收藏量
+            songList.setLikeNumbers(songList.getLikeNumbers() - 1);
+            songListMapper.updateById(songList);
+            // 删除这条关注记录
+            userAndSongListMapper.deleteById(userAndSongList.getId());
+            return 1;   // 表示取消收藏
         }
 
         // 更新歌单的收藏量
@@ -71,7 +77,8 @@ public class UserAndSongListServiceImpl implements UserAndSongListService {
         userAndSongList = new UserAndSongList();
         userAndSongList.setSonglistId(songListId);
         userAndSongList.setUserId(userId);
-        return userAndSongListMapper.insert(userAndSongList);
+        userAndSongListMapper.insert(userAndSongList);
+        return 2;   // 收藏成功
     }
 
 

@@ -4,6 +4,8 @@ import cn.emptyspirit.entity.Comment;
 import cn.emptyspirit.entity.expand.CommentExpand;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -28,4 +30,24 @@ public interface CommentMapper extends BaseMapper<Comment> {
      * @return
      */
     List<CommentExpand> selectReplyByCommentId(Integer commentId) throws Exception;
+
+
+    /**
+     * 根据id查询没有被删除的评论
+     * @param commentId
+     * @return
+     * @throws Exception
+     */
+    @Select("select * from t_comment where id = #{commentId} and comment_del = 0")
+    Comment selectUnDelCommentById(Integer commentId) throws Exception;
+
+
+    /**
+     * 将一条评论标记为删除
+     * @param commentId
+     * @return
+     */
+    @Update("update t_comment set comment_del = 1 where id = #{commentId}")
+    Integer updateCommentToDel(Integer commentId) throws Exception;
+
 }

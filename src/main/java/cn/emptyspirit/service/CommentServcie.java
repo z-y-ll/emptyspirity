@@ -2,6 +2,7 @@ package cn.emptyspirit.service;
 
 import cn.emptyspirit.entity.Comment;
 import cn.emptyspirit.entity.expand.CommentExpand;
+import cn.emptyspirit.global.R;
 
 import java.util.List;
 
@@ -29,4 +30,12 @@ public interface CommentServcie {
      * @return
      */
     List<CommentExpand> selectReplyByCommentId(Integer commentId) throws Exception;
+
+
+    /**
+     * 删除一条评论
+     * @param commentId 评论id
+     * @return
+     */
+    Integer deleteComment(Integer commentId) throws Exception;
 }

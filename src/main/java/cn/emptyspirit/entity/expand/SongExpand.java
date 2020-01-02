@@ -25,4 +25,10 @@ public class SongExpand extends Song {
      * 歌曲对应的类型
      */
     private Type type;
+
+
+    /**
+     * 歌曲的评论量
+     */
+    private Integer commentNum;
 }
