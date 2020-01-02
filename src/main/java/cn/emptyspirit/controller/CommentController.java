@@ -1,7 +1,6 @@
 package cn.emptyspirit.controller;
 
 import cn.emptyspirit.entity.Comment;
-import cn.emptyspirit.entity.User;
 import cn.emptyspirit.entity.expand.CommentExpand;
 import cn.emptyspirit.global.R;
 import cn.emptyspirit.service.CommentServcie;
@@ -9,7 +8,6 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
