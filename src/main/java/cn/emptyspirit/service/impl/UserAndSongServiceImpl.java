@@ -59,8 +59,14 @@ public class UserAndSongServiceImpl implements UserAndSongService {
 
         // 判断用户是否已经收藏过此歌曲
         UserAndSong userAndSong = userAndSongMapper.selectBySongIdAndUserId(songId, userId);
+        // 若用户收藏过歌曲，择进行取消收藏操作
         if (userAndSong != null) {
-            throw new ParamException("不能重复收藏");
+            // 更新歌曲的收藏量
+            song.setLikeNumber(song.getLikeNumber() - 1);
+            songMapper.updateById(song);
+            // 删除并返回结果
+            userAndSongMapper.deleteById(userAndSong.getId());
+            return 2;
         }
 
         // 更新歌曲的收藏量

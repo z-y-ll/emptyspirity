@@ -65,13 +65,16 @@ public class SingerServiceImpl implements SingerService {
      * @param singername
      * @return
      * @throws Exception
+     *
+     */
     @Override
     public List<Singer> getSingersLikeName(String singername) throws Exception {
         if (singername == null){
             throw new ParamException();
         }
+
         Wrapper<Singer> wrapper = Wrappers.<Singer>lambdaQuery().like(Singer::getSingerName, singername);
+//        return singerMapper.selectSingerByLikeName(singername);
         return singerMapper.selectList(wrapper);
     }
-    */
 }

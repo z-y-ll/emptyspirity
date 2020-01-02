@@ -60,14 +60,13 @@ public class SingerController {
 
     /**
      * 根据歌手名称模糊查询歌手
-     * @param singname
+     * @param singerName
      * @return
      * @throws Exception
+     */
     @GetMapping("/getSingersLikeName")
-    public R getSongsLikeName(String singname) throws Exception{
-        List<Singer> singerList = singerService.getSingersLikeName(singname);
-        return singerList.isEmpty() ? R.no() : R.ok(singerService);
+    public R getSongsLikeName(String singerName) throws Exception{
+        List<Singer> singerList = singerService.getSingersLikeName(singerName);
+        return singerList.isEmpty() ? R.no() : R.ok(singerList);
     }
-    */
-
 }

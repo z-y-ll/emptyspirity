@@ -31,11 +31,13 @@ public interface SingerService {
      */
     Singer getSingerByName(String singerId) throws Exception;
 
+
     /**
      * 根据姓名模糊查询歌手
      * @param singername
      * @return
      * @throws Exception
+     *
+     */
     List<Singer> getSingersLikeName(String singername) throws Exception;
-    */
 }

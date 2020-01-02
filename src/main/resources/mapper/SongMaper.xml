@@ -111,19 +111,11 @@
     </select>
 
     <select id="getSongsBySinger" parameterType="int" resultMap="SongsAndSinger">
-        SELECT
-               a.id,
-               a.song_name,
-               a.song_url,
-               a.play_time,
-               a.song_word,
-               a.song_photo,
-               b.singer_name
-        FROM
-             t_song a
-                 LEFT JOIN t_singer b ON a.singer_id = b.id
-        WHERE
-                a.singer_id = #{singerid}
+        select
+            a.singer_name,
+            b.*
+        from
+            t_singer a inner join t_song b on a.id = #{value } and a.id = b.singer_id
     </select>
 
     <select id="getSongsBySongList" parameterType="int" resultMap="SongsAndSinger">

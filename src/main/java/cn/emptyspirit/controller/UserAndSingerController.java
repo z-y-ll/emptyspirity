@@ -35,8 +35,15 @@ public class UserAndSingerController {
     @PostMapping("/addFollowSinger")
     public R addFollowSinger(Integer singerId, Integer userId /*HttpSession session*/) throws Exception{
 //        User user = (User) session.getAttribute("user");
-        return userAndSingerService.addFollowSinger(singerId, userId) > 0 ?
-                R.ok("关注成功") : R.error("关注失败");
+        Integer result = userAndSingerService.addFollowSinger(singerId, userId);
+        switch (result) {
+            case 1:
+                return R.ok("关注成功");
+            case 2:
+                return R.ok("取消关注成功");
+            default:
+                return R.error("操作失败");
+        }
     }
 
 

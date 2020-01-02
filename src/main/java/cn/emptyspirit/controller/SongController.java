@@ -99,7 +99,7 @@ public class SongController {
     @ApiOperation(value = "根据歌手id查询歌曲", notes = "根据获取的歌手id来查询歌曲")
     public R getSongsBySinger(@PathVariable("singerId") Integer singerid,
                               @RequestParam(defaultValue = "1") Integer pageNum,
-                              @RequestParam(defaultValue = "5") Integer pageSize) throws Exception {
+                              @RequestParam(defaultValue = "10") Integer pageSize) throws Exception {
         PageInfo<SongExpand> pageInfo = songService.getSongsBySinger(singerid, pageNum, pageSize);
         return pageInfo.getTotal() == 0 ? R.no() : R.ok(pageInfo);
     }

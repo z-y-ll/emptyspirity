@@ -1,6 +1,5 @@
 package cn.emptyspirit.controller;
 
-import cn.emptyspirit.entity.User;
 import cn.emptyspirit.entity.expand.SongExpand;
 import cn.emptyspirit.global.R;
 import cn.emptyspirit.service.UserAndSongService;
@@ -9,14 +8,13 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
  * 用户收藏歌曲相关操作
  */
 @RestController
-@RequestMapping("userAndSong")
+@RequestMapping("/userAndSong")
 @CrossOrigin
 @Api(value = "用户歌曲模块", tags = "用户歌曲模块相关的接口")
 public class UserAndSongController {
@@ -38,8 +36,15 @@ public class UserAndSongController {
     @PostMapping("/addFavoriteSong")
     public R addFavoriteSong(Integer songId, Integer userId/*HttpSession session*/) throws Exception{
 //        User user = (User) session.getAttribute("user");
-        return userAndSongService.addFavoriteSong(songId, userId) > 0 ?
-                R.ok("收藏成功") : R.error("收藏失败");
+        Integer result = userAndSongService.addFavoriteSong(songId, userId);
+        switch (result) {
+            case 1:
+                return R.ok("收藏成功");
+            case 2:
+                return R.ok("取消收藏成功");
+            default:
+                return R.error("操作失败");
+        }
     }
 
 
@@ -101,5 +106,4 @@ public class UserAndSongController {
                 userAndSongService.getOnePageFavoriteSongs(pageNum, pageSize, userId);
         return pageInfo.getTotal() == 0 ? R.no() : R.ok(pageInfo);
     }
-
 }

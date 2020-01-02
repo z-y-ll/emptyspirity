@@ -57,8 +57,11 @@ public class UserAndSingerServiceImpl implements UserAndSingerService {
         // 判断用户是否已经关注过此歌手，若已经关注，则不可重复关注
         UserAndSinger userAndSinger =
                 userAndSingerMapper.selectBySingerIdAndUserId(singerId, userId);
+        // 若已经关注过，则执行取消关注操作
         if (userAndSinger != null) {
-            throw new ParamException("请勿重复关注歌手");
+            // 删除关注记录
+            userAndSingerMapper.deleteById(userAndSinger.getId());
+            return 2;
         }
 
         // 封装一条记录，并插入数据库

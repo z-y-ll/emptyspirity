@@ -8,8 +8,11 @@
         <id property="id" column="id" />
         <result property="songName" column="song_name" />
         <result property="playTime" column="play_time" />
+        <result property="songUrl" column="song_url" />
+        <result property="songPhoto" column="song_photo" />
         <association property="singer" column="singer_name"
                      javaType="cn.emptyspirit.entity.Singer">
+            <result property="id" column="singerId" />
             <result property="singerName" column="singer_name" />
         </association>
     </resultMap>
@@ -17,14 +20,17 @@
     <select id="selectFavoriteSongsByUserId" parameterType="Integer"
             resultMap="FavoriteSongsMap">
         select
-            b.id,
-            b.song_name,
-            b.play_time,
-            c.singer_name
+                b.id,
+                b.song_name,
+                b.play_time,
+                b.song_url,
+                b.song_photo,
+                c.id singerId,
+                c.singer_name
         from
-            t_user_song a
-            inner join t_song b on a.user_id = #{value } and a.song_id = b.id
-            left join t_singer c on c.id = b.singer_id
+                t_user_song a
+                inner join t_song b on a.user_id = #{value } and a.song_id = b.id
+                left join t_singer c on c.id = b.singer_id
     </select>
 
 </mapper>
