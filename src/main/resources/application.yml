@@ -44,3 +44,4 @@ pagehelper:
 server:
   servlet:
     context-path: /emptyspirit
+

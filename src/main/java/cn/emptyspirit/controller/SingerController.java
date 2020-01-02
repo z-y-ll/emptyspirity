@@ -3,6 +3,7 @@ package cn.emptyspirit.controller;
 import cn.emptyspirit.entity.Singer;
 import cn.emptyspirit.global.R;
 import cn.emptyspirit.service.SingerService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/singer")
 @CrossOrigin
+@Api(value = "歌手模块", tags = "与歌手模块相关的接口")
 public class SingerController {
     private final SingerService singerService;
 
@@ -61,6 +63,7 @@ public class SingerController {
      * @param singname
      * @return
      * @throws Exception
+
     @GetMapping("/getSingersLikeName")
     public R getSongsLikeName(String singname) throws Exception{
         List<Singer> singerList = singerService.getSingersLikeName(singname);

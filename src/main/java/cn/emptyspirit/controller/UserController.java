@@ -3,6 +3,7 @@ package cn.emptyspirit.controller;
 import cn.emptyspirit.entity.User;
 import cn.emptyspirit.global.R;
 import cn.emptyspirit.service.UserService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/user")
 @CrossOrigin
+@Api(value = "用户模块", tags = "用户模块相关的接口")
 public class UserController {
 
     private final UserService userService;

@@ -23,10 +23,11 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `t_comment`;
 CREATE TABLE `t_comment`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
-  `song_id` int(11) NOT NULL COMMENT '歌曲id',
+  `parent_id` int(11) NOT NULL COMMENT '评论所在的歌曲id，或者它父级评论的id',
   `user_id` int(11) NOT NULL COMMENT '用户id',
   `content` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '评论内容',
   `create_time` datetime(0) DEFAULT CURRENT_TIMESTAMP COMMENT '评论时间',
+  `root_id` int(11) NOT NULL DEFAULT 0 COMMENT '此评论所属的根评论id，若此评论为一级评论，则此属性为0',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE =  utf8_general_ci ROW_FORMAT = Dynamic;
 
