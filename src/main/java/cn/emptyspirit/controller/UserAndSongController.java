@@ -5,6 +5,7 @@ import cn.emptyspirit.entity.expand.SongExpand;
 import cn.emptyspirit.global.R;
 import cn.emptyspirit.service.UserAndSongService;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("userAndSong")
 @CrossOrigin
+@Api(value = "用户歌曲模块", tags = "用户歌曲模块相关的接口")
 public class UserAndSongController {
 
     private final UserAndSongService userAndSongService;
